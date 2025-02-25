@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API_URL = "http://127.0.0.1:8000/api/";
 
+//no usages
 class Action {
   constructor(
     name,
@@ -11,7 +12,7 @@ class Action {
     executeFunction = null,
     undoFunction = null
   ) {
-    this.name = name; // 例如 "UPLOAD_FILE"
+    this.name = name;
     this.type = type; // "user" or "system"
     this.data = data; // { fileName, file }
     this.userId = userId; // Records of who performs
