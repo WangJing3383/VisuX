@@ -2,20 +2,98 @@ import pandas as pd
 import numpy as np
 import os
 
-from django.utils.timezone import now
 from sklearn.decomposition import PCA
-from scipy.interpolate import interp1d
 from sklearn.linear_model import LinearRegression
 from scipy.optimize import curve_fit, OptimizeWarning
 from imblearn.over_sampling import SMOTE,RandomOverSampler
 from sklearn.manifold import TSNE
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.feature_selection import VarianceThreshold
 from scipy.interpolate import interp1d, UnivariateSpline
 from itertools import combinations
-from backend.api.models import UploadedFile, AuditLog
+from backend.api.models import UploadedFile
 import umap.umap_ as umap
 import warnings
+
+DEFAULT_DIMREDUCTION_FACTOR = 2
+DEFAULT_POINT_NUMBER = 100
+PCA_RECOMMEND_NUMBER = 50
+TSNE_RECOMMEND_NUMBER = 10
+UMAP_RECOMMEND_NUMBER = 5
+PCA_MAX_COMPONENTS = 10
+TSNE_MAX_COMPONENTS = 30
+UMAP_MAX_COMPONENTS = 15
+COMPONENTS_DIVISOR = 2
+MIN_COMPONENTS = 2
+COLUMN_INDEX = 1
+DEFAULT_INTERPOLATION_DEGREE = 3
+DEFAULT_EXTRAPOLATION_DEGREE = 2
+DEFAULT_OVERSAMPLE_FACTOR = 2
+RANDOM_STATE = 42
+EXACT_INTERPOLATION_FACTOR = 0
+LIMIT = 1
+LARGEST_NOT_POSITIVE_NUMBER = 0
+DEGREE_OF_POLYNOMIAL = 1
+SLOPE_INDEX = 0
+INTERCEPT_INDEX = 1
+SINGLE_COLUMN = 1
+AUTO = -1
+FEATURE_DROPPING_CORRELATION_THRESHOLD = 0.95
+FEATURE_DROPPING_VARIANCE_THRESHOLD = 0.01
+FEATURE_COMBING_CORRELATION_THRESHOLD = 0.9
+
+DEFAULT_FILE_NAME = "unknown.csv"
+DEFAULT_ENGINE = "openpyxl"
+ALL_NUMERIC_TYPES = "number"
+
+OVERSAMPLE_PROCESS = "oversample"
+INTERPOLATE_PROCESS = "interpolation"
+EXTRAPOLATION_PROCESS = "extrapolate"
+FIT_CURVE_PROCESS = "curve fitting"
+
+CSV_TYPE = "csv"
+XLSX_TYPE = "xlsx"
+
+PCA_METHOD = "pca"
+TSNE_METHOD = "tsne"
+UMAP_METHOD = "umap"
+TSNE_PERPLEXITY = "perplexity"
+UMAP_N_NEIGHBOR = "n_neighbors"
+
+PEARSON_METHOD = "pearson"
+SPEARMAN_METHOD = "spearman"
+KENDALL_METHOD = "kendall"
+CUBIC_METHOD = "cubic"
+
+SMOTE_METHOD = "smote"
+RANDOM_METHOD = "random"
+
+N_COMPONENTS = "n_components"
+
+SPLINE_METHOD = "spline"
+LINEAR_METHOD = "linear"
+POLYNOMIAL_METHOD = "polynomial"
+EXPONENTIAL_METHOD = "exponential"
+
+INVALID_INPUT_INFORMATION = "Input data must be a pandas DataFrame."
+INVALID_DEGREE = "Degree must be an integer."
+ERROR_NUMERIC_DATA = "Dataset does not contain numeric data suitable for dimensionality reduction."
+INVALID_CORRELATION_METHOD_INFORMATION = "Invalid correlation method. Choose from 'pearson', 'spearman', or 'kendall'."
+INVALID_VALUE_IN_PROCESS = "Warning: NaN values generated during linear interpolation."
+ERROR_POSITIVE_VALUE = "All y values should be positive."
+UNSUPPORTED_INTERPOLATION_METHOD = "Unsupported interpolation method. Choose from 'linear', 'polynomial', or 'spline'."
+UNSUPPORTED_EXTRAPOLATION_METHOD = "Unsupported extrapolation method. Choose from 'linear', 'polynomial', 'exponential', or 'spline'."
+INVALID_OVERSAMPLE_METHOD = "Invalid oversampling method. Choose from 'SMOTE' or 'Random Oversampling'."
+
+ERROR_INFORMATION = "Error in {} processing: {}"
+FILE_NOT_FOUND_INFORMATION = "File not found: {}"
+INVALID_FILE_TYPE = "Unsupported file type: {}"
+ERROR_LOADING_MESSAGE = "Error loading dataset: {}"
+DATASET_NOT_FOUND_MESSAGE = "Dataset with ID {} not found."
+UNSUPPORTED_DIM_REDUCTION_METHOD = "Unsupported dimensionality reduction method: {}"
+INVALID_FEATURES = "Columns '{}' and/or '{}' not found in dataset"
+COLUMN_NAME = "dim{}"
+
+
 
 class Engine:
     def __init__(self):
@@ -31,131 +109,110 @@ class Engine:
             file_path = dataset.file_path.path
 
             if not os.path.exists(file_path):
-                raise FileNotFoundError(f"File not found: {file_path}")
+                raise FileNotFoundError(FILE_NOT_FOUND_INFORMATION.format(file_path))
 
-            if dataset.file_type == "csv":
+            if dataset.file_type == CSV_TYPE:
                 return pd.read_csv(file_path)
-            elif dataset.file_type == "xlsx":
-                return pd.read_excel(file_path, engine="openpyxl")
+            elif dataset.file_type == XLSX_TYPE:
+                return pd.read_excel(file_path, engine=DEFAULT_ENGINE)
             else:
-                raise ValueError(f"Unsupported file type: {dataset.file_type}")
+                raise ValueError(INVALID_FILE_TYPE.format(dataset.file_type))
 
         except UploadedFile.DoesNotExist:
-            raise ValueError(f"Dataset with ID {dataset_id} not found.")
+            raise ValueError(DATASET_NOT_FOUND_MESSAGE.format(dataset_id))
         except Exception as e:
-            raise ValueError(f"Error loading dataset: {e}")
+            raise ValueError(ERROR_LOADING_MESSAGE.format(e))
 
     @staticmethod
-    def apply_pca(data: pd.DataFrame, n_components: int = 2) -> pd.DataFrame:
+    def apply_pca(data: pd.DataFrame, n_components: int = DEFAULT_DIMREDUCTION_FACTOR) -> pd.DataFrame:
         """
         Perform PCA downscaling
         """
         try:
             pca = PCA(n_components=n_components)
             transformed_data = pca.fit_transform(data)
-            columns = [f'dim{i + 1}' for i in range(n_components)]
+            columns = [COLUMN_NAME.format(i+COLUMN_INDEX) for i in range(n_components)]
             return pd.DataFrame(transformed_data, columns=columns)
         except Exception as e:
-            raise ValueError(f"Error in PCA processing: {e}")
+            raise ValueError(ERROR_INFORMATION.format(PCA_METHOD,e))
 
     @staticmethod
-    def apply_tsne(data: pd.DataFrame, n_components: int = 2) -> pd.DataFrame:
+    def apply_tsne(data: pd.DataFrame, n_components: int = DEFAULT_DIMREDUCTION_FACTOR) -> pd.DataFrame:
         """
         Perform t-SNE dimensionality reduction
         """
         try:
             tsne = TSNE(n_components=n_components)
             transformed_data = tsne.fit_transform(data)
-            columns = [f'dim{i + 1}' for i in range(n_components)]
+            columns = [COLUMN_NAME.format(i+COLUMN_INDEX) for i in range(n_components)]
             return pd.DataFrame(transformed_data, columns=columns)
         except Exception as e:
-            raise ValueError(f"Error in t-SNE processing: {e}")
+            raise ValueError(ERROR_INFORMATION.format(TSNE_METHOD,e))
 
     @staticmethod
-    def apply_umap(data: pd.DataFrame, n_components: int = 2) -> pd.DataFrame:
+    def apply_umap(data: pd.DataFrame, n_components: int = DEFAULT_DIMREDUCTION_FACTOR) -> pd.DataFrame:
         """
         Perform UMAP dimensionality reduction
         """
         try:
             reducer = umap.UMAP(n_components=n_components)
             transformed_data = reducer.fit_transform(data)
-            columns = [f'dim{i + 1}' for i in range(n_components)]
+            columns = [COLUMN_NAME.format(i+COLUMN_INDEX) for i in range(n_components)]
             return pd.DataFrame(transformed_data, columns=columns)
         except Exception as e:
-            raise ValueError(f"Error in UMAP processing: {e}")
+            raise ValueError(ERROR_INFORMATION.format(UMAP_METHOD,e))
 
     @staticmethod
-    def dimensional_reduction(data: pd.DataFrame, method: str, n_components: int = 2, filename="unknown.csv") -> pd.DataFrame:
+    def dimensional_reduction(data: pd.DataFrame, method: str, n_components: int = DEFAULT_DIMREDUCTION_FACTOR, filename=DEFAULT_FILE_NAME) -> pd.DataFrame:
         """
         Performs downscaling according to the specified method
         """
         if not isinstance(data, pd.DataFrame):
-            raise ValueError("Input data must be a pandas DataFrame.")
+            raise ValueError(INVALID_INPUT_INFORMATION)
 
         # Selecting Numeric Data
-        numeric_data = data.select_dtypes(include=['number'])
+        numeric_data = data.select_dtypes(include=[ALL_NUMERIC_TYPES])
         if numeric_data.empty:
-            raise ValueError("Dataset does not contain numeric data suitable for dimensionality reduction.")
-
-        Engine.log_action(method.upper(), filename, n_components, len(numeric_data))
-
+            raise ValueError(ERROR_NUMERIC_DATA)
+        
         # Implementation of dimensionality reduction
-        if method == "pca":
+        if method == PCA_METHOD:
             return Engine.apply_pca(numeric_data, n_components)
-        elif method == "tsne":
+        elif method == TSNE_METHOD:
             return Engine.apply_tsne(numeric_data, n_components)
-        elif method == "umap":
+        elif method == UMAP_METHOD:
             return Engine.apply_umap(numeric_data, n_components)
         else:
-            raise ValueError(f"Unsupported dimensionality reduction method: {method}")
+            raise ValueError(UNSUPPORTED_DIM_REDUCTION_METHOD.format(method))
 
     @staticmethod
     def recommend_dim_reduction(dataset_df):
         try:
-            num_features = dataset_df.shape[1]
+            num_features = dataset_df.shape[COLUMN_INDEX]
             recommendations = []
             parameters = {}
 
-            if num_features > 50:
-                recommendations.append("pca")
-                parameters["pca"] = {"n_components": min(10, num_features // 2)}
+            if num_features > PCA_RECOMMEND_NUMBER:
+                recommendations.append(PCA_METHOD)
+                parameters[PCA_METHOD] = {N_COMPONENTS: min(PCA_MAX_COMPONENTS, num_features // COMPONENTS_DIVISOR)}
 
-            if num_features > 10:
-                recommendations.append("tsne")
-                parameters["tsne"] = {"n_components": 2, "perplexity": min(30, num_features - 1)}
+            if num_features > TSNE_RECOMMEND_NUMBER:
+                recommendations.append(TSNE_METHOD)
+                parameters[TSNE_METHOD] = {N_COMPONENTS: DEFAULT_DIMREDUCTION_FACTOR, TSNE_PERPLEXITY: min(TSNE_MAX_COMPONENTS, num_features - 1)}
 
-            if num_features > 5:
-                recommendations.append("umap")
-                parameters["umap"] = {"n_components": 2, "n_neighbors": min(15, num_features - 1)}
+            if num_features > UMAP_RECOMMEND_NUMBER:
+                recommendations.append(UMAP_METHOD)
+                parameters[UMAP_METHOD] = {N_COMPONENTS: DEFAULT_DIMREDUCTION_FACTOR, UMAP_N_NEIGHBOR: min(UMAP_MAX_COMPONENTS, num_features - 1)}
 
             if not recommendations:
-                recommendations.append("pca")
-                parameters["pca"] = {"n_components": min(2, num_features)}
+                recommendations.append(PCA_METHOD)
+                parameters[PCA_METHOD] = {N_COMPONENTS: min(MIN_COMPONENTS, num_features)}
 
             return recommendations, parameters
         except Exception as e:
             return [], {}
-    """
-    # Do interpolate with given data, given kind of interpolation, the number of generated data and the given range.
-    # The default generated kind is linear.
-    # The default number of generated data is 100.
-    # User is allowed to set the range of the interpolation(extrapolation).
-    # If the user doesn't set the range, the default value will be the maximum and minimum in x.
-    def interpolate(self, x: np.ndarray, y: np.ndarray, kind: str = 'linear', num_points: int = 100, min_value = None, max_value = None) -> pd.DataFrame:
-        try:
-            interpolator = interp1d(x, y, kind=kind, ill_value = "extrapolate")
-            if min_value is None:
-                min_value = np.min(x)
-            if max_value is None:
-                max_value = np.max(x)
-            x_new = np.linspace(min_value, max_value, num_points)
-            y_new = interpolator(x_new)
-            return pd.DataFrame({'x': x_new, 'y': y_new})
-        except Exception as e:
-            raise ValueError(f"Error in interpolation: {e}")
-    """
 
-    def interpolate(dataset: pd.DataFrame, x_feature: str, y_feature: str, kind: str = 'linear', num_points: int = 100, min_value=None, max_value=None, degree: int = 3) -> pd.DataFrame:
+    def interpolate(dataset: pd.DataFrame, x_feature: str, y_feature: str, kind: str = LINEAR_METHOD, num_points: int = DEFAULT_POINT_NUMBER, min_value=None, max_value=None, degree: int = DEFAULT_INTERPOLATION_DEGREE) -> pd.DataFrame:
         """
         Perform interpolation (or extrapolation) on a given dataset.
 
@@ -173,7 +230,7 @@ class Engine:
         try:
             # Ensure that x_feature and y_feature exist in the DataFrame
             if x_feature not in dataset.columns or y_feature not in dataset.columns:
-                raise ValueError(f"Columns '{x_feature}' and/or '{y_feature}' not found in dataset")
+                raise ValueError(INVALID_FEATURES.format(x_feature,y_feature))
 
             # Extract x and y data
             x = dataset[x_feature].values
@@ -196,47 +253,47 @@ class Engine:
             x_new = np.linspace(min_value, max_value, num_points)
             
             # Linear interpolation
-            if kind == "linear":
-                interpolator = interp1d(x, y, kind="linear", fill_value="extrapolate")
+            if kind == LINEAR_METHOD:
+                interpolator = interp1d(x, y, kind=LINEAR_METHOD, fill_value=EXTRAPOLATION_PROCESS)
                 y_new = interpolator(x_new)
                 # Check if NaN values were generated during interpolation
                 if np.any(np.isnan(y_new)):
-                    print("Warning: NaN values generated during linear interpolation.")
+                    print(INVALID_VALUE_IN_PROCESS)
                     y_new = np.nan_to_num(y_new)  # Replace NaNs with 0 or another suitable value
 
             # Polynomial interpolation
-            elif kind == "polynomial":
+            elif kind == POLYNOMIAL_METHOD:
                 poly_coeffs = np.polyfit(x, y, degree)
                 poly_func = np.poly1d(poly_coeffs)
                 y_new = poly_func(x_new)
 
             # Spline interpolation
-            elif kind == "spline":
-                spline = UnivariateSpline(x, y, k=min(degree, len(x) - 1), s=0)
+            elif kind == SPLINE_METHOD:
+                spline = UnivariateSpline(x, y, k=min(degree, len(x) - LIMIT), s=EXACT_INTERPOLATION_FACTOR)
                 y_new = spline(x_new)
 
             # Exponential interpolation
-            elif kind == "exponential":
+            elif kind == EXPONENTIAL_METHOD:
                 # Ensure all y values are positive (required for log transformation)
-                if np.any(y <= 0):
-                    raise ValueError("Exponential interpolation requires all y values to be positive.")
+                if np.any(y <= LARGEST_NOT_POSITIVE_NUMBER):
+                    raise ValueError(ERROR_POSITIVE_VALUE)
 
                 # Fit a linear model to log(y)
                 log_y = np.log(y)
-                coeffs = np.polyfit(x, log_y, 1)
-                exp_func = lambda x_val: np.exp(coeffs[1]) * np.exp(coeffs[0] * x_val)
+                coeffs = np.polyfit(x, log_y, DEGREE_OF_POLYNOMIAL)
+                exp_func = lambda x_val: np.exp(coeffs[INTERCEPT_INDEX]) * np.exp(coeffs[SLOPE_INDEX] * x_val)
                 y_new = exp_func(x_new)
 
             else:
-                raise ValueError("Unsupported interpolation method. Choose from 'linear', 'polynomial', or 'spline'.")
+                raise ValueError(UNSUPPORTED_INTERPOLATION_METHOD)
 
             # Return the interpolated DataFrame
             return pd.DataFrame({x_feature: x_new, y_feature: y_new})
 
         except Exception as e:
-            raise ValueError(f"Error in interpolation: {e}")
+            raise ValueError(ERROR_INFORMATION.format(INTERPOLATE_PROCESS, e))
 
-    def extrapolate(data: pd.DataFrame, x_feature: str, y_feature: str, target_x: list, method="linear", degree=2) -> pd.DataFrame:
+    def extrapolate(data: pd.DataFrame, x_feature: str, y_feature: str, target_x: list, method=LINEAR_METHOD, degree=DEFAULT_EXTRAPOLATION_DEGREE) -> pd.DataFrame:
         """
         Perform extrapolation using different methods.
 
@@ -250,46 +307,46 @@ class Engine:
         """
     
         if not isinstance(data, pd.DataFrame):
-            raise TypeError("Input data must be a pandas DataFrame")
+            raise TypeError(INVALID_INPUT_INFORMATION)
         if x_feature not in data.columns or y_feature not in data.columns:
-            raise ValueError(f"DataFrame must contain columns '{x_feature}' and '{y_feature}'")
+            raise ValueError(INVALID_FEATURES.format(x_feature,y_feature))
 
-        X = data[x_feature].values.reshape(-1, 1)  # Extract x values
+        X = data[x_feature].values.reshape(AUTO, SINGLE_COLUMN)  # Extract x values
         y = data[y_feature].values  # Extract y values
         target_x = np.array(target_x)  # Convert to numpy array
 
-        if method == "linear":
+        if method == LINEAR_METHOD:
             model = LinearRegression()
             model.fit(X, y)
-            y_pred = model.predict(target_x.reshape(-1, 1))
+            y_pred = model.predict(target_x.reshape(AUTO, SINGLE_COLUMN))
 
-        elif method == "polynomial":
+        elif method == POLYNOMIAL_METHOD:
             coeffs = np.polyfit(X.flatten(), y, degree)
             poly_func = np.poly1d(coeffs)
             y_pred = poly_func(target_x)
 
-        elif method == "exponential":
+        elif method == EXPONENTIAL_METHOD:
             # Use log transformation for exponential regression
-            if np.any(y <= 0):
-                raise ValueError("Exponential extrapolation requires positive y values")
+            if np.any(y <= LARGEST_NOT_POSITIVE_NUMBER):
+                raise ValueError(ERROR_POSITIVE_VALUE)
             log_y = np.log(y)
             model = LinearRegression()
             model.fit(X, log_y)
             log_y_pred = model.predict(target_x.reshape(-1, 1))
             y_pred = np.exp(log_y_pred)  # Convert back to exponential form
 
-        elif method == "spline":
-            spline_func = interp1d(X.flatten(), y, kind="cubic", fill_value="extrapolate")
+        elif method == SPLINE_METHOD:
+            spline_func = interp1d(X.flatten(), y, kind=CUBIC_METHOD, fill_value=EXTRAPOLATION_PROCESS)
             y_pred = spline_func(target_x)
 
         else:
-            raise ValueError("Unsupported extrapolation method. Choose from 'linear', 'polynomial', 'exponential', or 'spline'.")
+            raise ValueError(UNSUPPORTED_EXTRAPOLATION_METHOD)
 
         # Return extrapolated data as a pandas DataFrame
         return pd.DataFrame({x_feature: target_x, y_feature: y_pred})
 
     @staticmethod
-    def fit_curve(dataset: pd.DataFrame, x_feature: str, y_feature: str, method: str = "linear", degree: int = 2, initial_params: list = None):
+    def fit_curve(dataset: pd.DataFrame, x_feature: str, y_feature: str, method: str = LINEAR_METHOD, degree: int = 2, initial_params: list = None):
         """
         Perform curve fitting on the given dataset.
 
@@ -316,29 +373,29 @@ class Engine:
             try:
                 degree = int(degree)
             except ValueError:
-                raise ValueError("degree must be a int")
+                raise ValueError(INVALID_DEGREE)
 
             # generate x
-            x_fit = np.linspace(np.min(x), np.max(x), 100)
+            x_fit = np.linspace(np.min(x), np.max(x), DEFAULT_POINT_NUMBER)
 
-            if method == "linear":
+            if method == LINEAR_METHOD:
                 def linear_func(x, a, b):
                     return a * x + b
 
                 params, covariance = curve_fit(linear_func, x, y)
                 y_fit_curve = linear_func(x_fit, *params)
 
-            elif method == "polynomial":
+            elif method == POLYNOMIAL_METHOD:
                 try:
                     poly_coeffs = np.polyfit(x, y, degree)
                 except Exception as e:
-                    print(f"Errors in the fitting process: {e}")
+                    print(ERROR_INFORMATION.format(FIT_CURVE_PROCESS,e))
                     return None, None, None
                 poly_func = np.poly1d(poly_coeffs)
                 y_fit_curve = poly_func(x_fit)
                 params, covariance = poly_coeffs, None  # no covariance for polynomial
 
-            elif method == "exponential":
+            elif method == EXPONENTIAL_METHOD:
                 def exp_func(x, a, b, c):
                     return a * np.exp(b * x) + c
                 if x.size == 0 or y.size == 0:
@@ -373,9 +430,9 @@ class Engine:
             return params, covariance, fitted_data
 
         except Exception as e:
-            raise ValueError(f"Error in curve fitting: {e}")
+            raise ValueError(ERROR_INFORMATION.format(FIT_CURVE_PROCESS,e))
 
-    def oversample_data(dataset: pd.DataFrame, x_feature: str, y_feature: str, method: str = 'smote', oversample_factor: int = 1) -> pd.DataFrame:
+    def oversample_data(dataset: pd.DataFrame, x_feature: str, y_feature: str, method: str = SMOTE_METHOD, oversample_factor: int = DEFAULT_OVERSAMPLE_FACTOR) -> pd.DataFrame:
         """
         Perform oversampling.
 
@@ -389,7 +446,7 @@ class Engine:
         try:
             # Ensure that x_feature and y_feature exist in the DataFrame
             if x_feature not in dataset.columns or y_feature not in dataset.columns:
-                raise ValueError(f"Columns '{x_feature}' and/or '{y_feature}' not found in dataset")
+                raise ValueError(INVALID_FEATURES.format(x_feature,y_feature))
             
             else:
                 X = dataset[[x_feature]].values
@@ -410,17 +467,17 @@ class Engine:
 
 
                 #Use SMOTE to oversample.
-                if method == 'smote':
+                if method == SMOTE_METHOD:
                     min_samples = min(class_counts.values)
                     n_neighbors = max(1, min(5, min_samples - 1))
-                    oversampler = SMOTE(sampling_strategy=sampling_strategy, random_state=42, k_neighbors=n_neighbors)
+                    oversampler = SMOTE(sampling_strategy=sampling_strategy, random_state=RANDOM_STATE, k_neighbors=n_neighbors)
 
                 #Use random to oversample.
-                elif method == "random":
-                    oversampler = RandomOverSampler(sampling_strategy=sampling_strategy, random_state=42)
+                elif method == RANDOM_METHOD:
+                    oversampler = RandomOverSampler(sampling_strategy=sampling_strategy, random_state=RANDOM_STATE)
                 
                 else:
-                    raise ValueError("Invalid oversampling method. Choose from 'SMOTE' or 'Random Oversampling'.")
+                    raise ValueError(INVALID_OVERSAMPLE_METHOD)
 
                 X_resampled, y_resampled = oversampler.fit_resample(X, y)
 
@@ -428,14 +485,12 @@ class Engine:
                 oversampled_data = pd.DataFrame(X_resampled, columns=[x_feature])
                 oversampled_data[y_feature] = y_resampled 
 
-                print("The classed after oversample:", oversampled_data[y_feature].value_counts())
-
                 return oversampled_data
 
         except Exception as e:
-            raise ValueError(f"Error in oversampling data: {e}")
+            raise ValueError(ERROR_INFORMATION.format(OVERSAMPLE_PROCESS,e))
 
-    def suggest_feature_dropping(dataset: pd.DataFrame, correlation_threshold=0.95, variance_threshold=0.01):
+    def suggest_feature_dropping(dataset: pd.DataFrame, correlation_threshold=FEATURE_DROPPING_CORRELATION_THRESHOLD, variance_threshold=FEATURE_DROPPING_VARIANCE_THRESHOLD):
         """
         Identify features to be dropped based on:
         1. Low variance (below `variance_threshold`).
@@ -448,7 +503,7 @@ class Engine:
         """
 
         if not isinstance(dataset, pd.DataFrame):
-            raise TypeError("Input dataset must be a pandas DataFrame")
+            raise TypeError(INVALID_INPUT_INFORMATION)
 
         features_to_drop = set()
 
@@ -470,7 +525,7 @@ class Engine:
         return list(features_to_drop)
         
 
-    def suggest_feature_combining(dataset: pd.DataFrame, correlation_threshold=0.9):
+    def suggest_feature_combining(dataset: pd.DataFrame, correlation_threshold=FEATURE_COMBING_CORRELATION_THRESHOLD):
         """
         Suggest feature combinations based on high correlation (correlation > `correlation_threshold`).
 
@@ -479,7 +534,7 @@ class Engine:
         :return: List[dict], suggested feature pairs for combining.
         """
         if not isinstance(dataset, pd.DataFrame):
-            raise TypeError("Input dataset must be a pandas DataFrame")
+            raise TypeError(INVALID_INPUT_INFORMATION)
 
         suggested_combinations = []
 
@@ -499,7 +554,7 @@ class Engine:
                 })
         return suggested_combinations
 
-    def compute_correlation(data: pd.DataFrame, feature_1: str, feature_2: str, method="pearson") -> float:
+    def compute_correlation(data: pd.DataFrame, feature_1: str, feature_2: str, method=PEARSON_METHOD) -> float:
         """
         Compute the correlation between two specified features in a pandas DataFrame.
 
@@ -510,31 +565,19 @@ class Engine:
         :return: float, correlation coefficient between the two features
         """
         if not isinstance(data, pd.DataFrame):
-            raise TypeError("Input data must be a pandas DataFrame")
+            raise TypeError(INVALID_INPUT_INFORMATION)
 
         if feature_1 not in data.columns or feature_2 not in data.columns:
-            raise ValueError(f"Features '{feature_1}' and/or '{feature_2}' not found in the dataset")
+            raise ValueError(INVALID_FEATURES.format(feature_1,feature_2))
 
-        if method == "pearson":
-            correlation = data[feature_1].corr(data[feature_2], method="pearson")
-        elif method == "spearman":
-            correlation = data[feature_1].corr(data[feature_2], method="spearman")
-        elif method == "kendall":
-            correlation = data[feature_1].corr(data[feature_2], method="kendall")
+        if method == PEARSON_METHOD:
+            correlation = data[feature_1].corr(data[feature_2], method=PEARSON_METHOD)
+        elif method == SPEARMAN_METHOD:
+            correlation = data[feature_1].corr(data[feature_2], method=SPEARMAN_METHOD)
+        elif method == KENDALL_METHOD:
+            correlation = data[feature_1].corr(data[feature_2], method=KENDALL_METHOD)
         else:
-            raise ValueError("Invalid correlation method. Choose from 'pearson', 'spearman', or 'kendall'.")
+            raise ValueError(INVALID_CORRELATION_METHOD_INFORMATION)
 
         return correlation
     
-    @staticmethod
-    def log_action(tool_type: str, filename: str, n_components: int, rows: int):
-        AuditLog.objects.create(
-            tool_type=tool_type,
-            timestamp=now(),
-            params={ 
-                "filename": filename,
-                "n_components": n_components,
-                "rows": rows
-            },
-            is_reverted=False
-        )

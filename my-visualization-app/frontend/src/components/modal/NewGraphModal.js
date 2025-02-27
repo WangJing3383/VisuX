@@ -7,7 +7,7 @@ const { TabPane } = Tabs;
 
 // Define chart categories
 
-const GraphModal = ({ visible, onCancel, uiController }) => {
+const NewGraphModal = ({ visible, onCancel, uiController }) => {
   const [features, setFeatures] = useState([]);
   const [selectedGraphType, setSelectedGraphType] = useState(null);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
@@ -184,4 +184,4 @@ const GraphModal = ({ visible, onCancel, uiController }) => {
   );
 };
 
-export default GraphModal;
+export default NewGraphModal;

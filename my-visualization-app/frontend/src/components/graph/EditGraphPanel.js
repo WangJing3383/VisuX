@@ -4,22 +4,24 @@ import { ChromePicker } from "react-color";
 import GraphManager from "./GraphManager";
 import CurveFittingModal from "../modal/CurveFittingModal";
 import { chartCategories } from "./ChartCategories";
-import "./EditGraphPanel.css";
+import "./EditGraphPanel.css"; 
 
 const EditGraphPanel = () => {
-  const [graphDetails, setGraphDetails] = useState([]);
-  const [selectedGraphForEdit, setSelectedGraphForEdit] = useState(null);
-  const [editColor, setEditColor] = useState("#ffffff");
-  const [selectedX, setSelectedX] = useState(null);
-  const [selectedY, setSelectedY] = useState(null);
-  const [selectedZ, setSelectedZ] = useState(null);
-  const [curveFitVisible, setCurveFitVisible] = useState(false);
-  const [additionalYAxes, setAdditionalYAxes] = useState([]);
+  const [graphDetails, setGraphDetails] = useState([]); //holds the graph details of the graph to be edited
+  const [selectedGraphForEdit, setSelectedGraphForEdit] = useState(null); // the actual graph currently selected for editing
+  const [editColor, setEditColor] = useState("#ffffff"); // color of the selected graph
+  const [selectedX, setSelectedX] = useState(null); // x-axis of the selected graph
+  const [selectedY, setSelectedY] = useState(null); // y-axis of the selected graph
+  const [selectedZ, setSelectedZ] = useState(null); // z-axis of the selected graph
+  const [selectedType, setSelectedType] = useState(null);
+  const [curveFitVisible, setCurveFitVisible] = useState(false); // curve fitting line of the selected graph
+  const [additionalYAxes, setAdditionalYAxes] = useState([]); // more y axes of the selected graph
   const [filterData, setFilterData] = useState({
-    include: [],
-    exclude: []
+    include: [], //include filter for data points/ x-axis
+    exclude: []  //exclude filter for data points/ y-axis
   });
 
+  // Fetching information from graph and synchronize on change
   useEffect(() => {
     const fetchGraphs = () => {
       const graphs = GraphManager.getAllGraphs().map((graph) => ({
@@ -29,10 +31,11 @@ const EditGraphPanel = () => {
         graphFeatures: graph.selectedFeatures,
         xColumn: graph.xAxis,
         yColumn: graph.yAxis,
+        zColumn: graph.ZAxis,
         dataset: graph.dataset || {},
         color: graph.style?.colorScheme || "#ffffff",
         style: graph.style,
-        graphObject: graph, // original graph object
+        graphObject: graph, // original graph object to ensure that graph is actualy a "graph" object
         graphDatasetId: graph.datasetId,
       }));
       setGraphDetails(graphs);
@@ -53,12 +56,11 @@ const EditGraphPanel = () => {
     setSelectedX(graph?.graphFeatures[0] || null);
     setSelectedY(graph?.graphFeatures[1] || null);
     setSelectedZ(graph?.graphFeatures[2] || null);
-    // Instead of resetting additionalYAxes to empty,
-    // synchronize it with the graph's moreYAxes array
+    // Instead of resetting additionalYAxes to empty, synchronize it with the graph's moreYAxes array
     const moreYAxes = graph?.graphObject?.getMoreYAxes();
     setAdditionalYAxes(moreYAxes || []);
+    setSelectedType(graph?.graphType);
   };
-
 
   const handleColorChange = (color) => {
     setEditColor(color.hex);
@@ -238,6 +240,7 @@ const EditGraphPanel = () => {
       setSelectedX(updatedGraph.graphFeatures[0] || null);
       setSelectedY(updatedGraph.graphFeatures[1] || null);
       setSelectedZ(updatedGraph.graphFeatures[2] || null);
+      setSelectedType(newType);
     }
   };
 
