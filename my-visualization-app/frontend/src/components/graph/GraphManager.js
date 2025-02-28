@@ -79,6 +79,11 @@ class GraphManager {
     return true;
   }
 
+  /**
+   * 
+   * @param {*} graphId graphId to be deleted
+   * @returns true if deleted succesfully, false if graph not found
+   */
   deleteGraph(graphId) {
     if (this.graphs.has(graphId)) {
       this.graphs.delete(graphId);
@@ -87,6 +92,11 @@ class GraphManager {
     return false;
   }
 
+  /**
+   * 
+   * @param {*} graphId graph to be searched
+   * @returns if found graph, null if not found
+   */
   getGraphById(graphId) {
     const graph = this.graphs.get(graphId);
     if (!graph) {
@@ -95,10 +105,20 @@ class GraphManager {
     return graph || null;
   }
 
+  /**
+   * 
+   * @returns all graphs
+   */
   getAllGraphs() {
     return Array.from(this.graphs.values());
   }
 
+  /**
+   * 
+   * @param {*} graphId graph to be colored
+   * @param {*} newColor new color of graph
+   * @returns true if correctly colored, false otherwise
+   */
   changeGraphColor(graphId, newColor) {
     const graph = this.graphs.get(graphId);
     if (graph) {
@@ -109,6 +129,13 @@ class GraphManager {
     return false;
   }
 
+  /**
+   * 
+   * @param {*} graphId graph to be changed
+   * @param {*} selectedAxis x,y or z
+   * @param {*} newFeature new feature that will be associated with selectedAxis
+   * @returns  true if axis correctly changed, false otherwise
+   */
   changeAxis(graphId, selectedAxis, newFeature) {
     const graph = this.graphs.get(graphId);
     if (graph) {
@@ -121,6 +148,11 @@ class GraphManager {
     return false;
   }
 
+  /**
+   * 
+   * @param {*} graphId graph to be changed
+   * @param {*} newType new graph type (one from ChartCategories)
+   */
   changeType(graphId, newType) {
     const graph = this.graphs.get(graphId);
     if (graph) {
@@ -132,6 +164,10 @@ class GraphManager {
   }
  }
 
+ /**
+  * 
+  * @param {*} graphId graph to hide/show
+  */
  changeVisibility(graphId) {
   const graph = this.graphs.get(graphId);
   if (graph) {
@@ -143,18 +179,13 @@ class GraphManager {
 
  }
 
- excludeRangeFromGraph(graphId, min, max) {
-    const graph = this.graphs.get(graphId);
-    if (!graph) {
-      console.warn(`Graph ID ${graphId} not found.`);
-      return false;
-    }
-
-    graph.showedDatapoints = graph.showedDatapoints.filter(num => num < min || num > max);
-    this.notify({ type: "graphUpdated", graphId });
-    return true;
-  }
-
+  /**
+   * 
+   * @param {*} graphId graph that its datapoints to be changed
+   * @param {*} min  number starting to include
+   * @param {*} max  number ending to include
+   * @returns 
+   */
   restoreRangeToGraph(graphId, min, max) {
     const graph = this.graphs.get(graphId);
     if (!graph) {
@@ -167,6 +198,14 @@ class GraphManager {
     return true;
   }
 
+   
+  /**
+   * 
+   * @param {*} graphId graph that its datapoints to be changed
+   * @param {*} min number starting to exclude
+   * @param {*} max  number ending to exclude
+   * @returns 
+   */
    excludeRangeToGraph(graphId, min, max) {
     const graph = this.graphs.get(graphId);
     if (!graph) {
@@ -179,6 +218,12 @@ class GraphManager {
     return true;
   }
 
+  /**
+   * 
+   * @param {*} graphId graph to be changed
+   * @param {*} newAxis new feature for new Y axes
+   * @returns 
+   */
   addMoreYAxis(graphId, newAxis) {
     const graph = this.graphs.get(graphId);
     if (!graph) {
@@ -190,6 +235,12 @@ class GraphManager {
     return true;
   }
 
+  /**
+   * 
+   * @param {*} graphId graph to be changed
+   * @param {*} axisToRemove feature of the axis to be removed
+   * @returns 
+   */
   removeMoreYAxis(graphId, axisToRemove) {
     const graph = this.graphs.get(graphId);
     if (!graph) {
@@ -202,15 +253,28 @@ class GraphManager {
   }
 
   //these 3 are all related to notifying other claasses about changes
+
+  /**
+   * 
+   * @param {*} data updating data
+   */
   notify(data) {
     console.log("GraphManager triggered", data);
     this.eventListeners.forEach((callback) => callback(data));
   }
 
+  /**
+   * 
+   * @param {*} callback new listener
+   */
   onChange(callback) {
     this.eventListeners.push(callback);
   }
 
+  /**
+   * 
+   * @param {*} callback listener to be removed
+   */
   offChange(callback) {
     this.eventListeners = this.eventListeners.filter((fn) => fn !== callback);
   }

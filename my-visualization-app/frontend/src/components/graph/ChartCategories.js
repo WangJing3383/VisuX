@@ -1,5 +1,6 @@
 import {LineChartOutlined, BarChartOutlined, PieChartOutlined, HeatMapOutlined, RadarChartOutlined, DotChartOutlined, AreaChartOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 
+// chartCategories for representing Graph Types
 export const chartCategories = {
     "Basic Charts": [
       { type: "scatter", name: "Scatter Plot", icon: <DotChartOutlined />, requiredFeatures: 2 },

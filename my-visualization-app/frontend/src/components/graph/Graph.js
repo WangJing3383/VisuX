@@ -132,6 +132,11 @@ class Graph {
     this.type = newType;
   }
 
+  /**
+   * 
+   * @param {*} graphType graph type to search
+   * @returns required amount of features (0 if not found)
+   */
   getRequiredFeatures(graphType) {
     for (let category in chartCategories) {
       const searchedType = chartCategories[category].find((searchedType) => searchedType.type === graphType);

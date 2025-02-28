@@ -1,5 +1,6 @@
 import { chartCategories } from "./ChartCategories";
 
+//main class to generate Plotly data from Graph Attributes
 class VisualizationManager {
 
   EMPTY_ARRAY_LENGTH = 0;
