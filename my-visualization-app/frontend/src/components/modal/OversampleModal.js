@@ -56,9 +56,13 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
   }, [datasetId]); // Dependent on `datasetId`, triggered on change
 
   const handleOversample = async () => {
-    if (!datasetId || !xColumn || !yColumn || factor <= VALID_OVERSAMPLE_FACTOR) {
-      message.error("Please select a dataset, two columns, and enter a valid oversampling factor!");
+    if (!datasetId || !xColumn || !yColumn) {
+      alert("Please select a dataset and two columns.");
       return;
+    }
+    if(factor <= VALID_OVERSAMPLE_FACTOR || factor > 10) {
+      alert("Please give a valid oversample factor. The oversample factor should be between 1 and 10! The output dataset is the dataset oversampled with factor 2.")
+      alert("test")
     }
     const requestData = {
       datasetId: datasetId,
@@ -207,13 +211,16 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
         </Select>
 
         {/* Input oversampling multiplier */}
+        <label>
         <InputNumber
+          addonBefore = "Oversample Factor"
           min={1}
           max={10}
           value={factor}
           onChange={setOversamplingFactor}
           style={{ width: "100%", marginTop: "10px" }}
         />
+        </label>
 
         <Button type="primary" onClick={handleOversample} block style={{ marginTop: "10px" }}>
           Run Oversampling
