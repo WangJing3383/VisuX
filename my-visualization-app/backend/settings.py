@@ -19,7 +19,7 @@ ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost",
     "http://127.0.0.1",
-] + [f"http://localhost:{port}" for port in range(3000, 90000)]  # 允许 localhost 端口 3000-90000 访问
+] + [f"http://localhost:{port}" for port in range(3000, 90000)]  # Allow localhost port 3000-90000 access
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
@@ -55,7 +55,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "api.middleware.clear_db_middleware.ClearDatabaseMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # '"django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",

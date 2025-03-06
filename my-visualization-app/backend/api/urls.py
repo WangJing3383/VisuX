@@ -1,8 +1,8 @@
 from django.urls import path
 from .views import DataVisualizationView, OversampleDataView, SuggestFeatureCombiningView, SuggestFeatureDroppingView, \
     ApplyPcaView, HandleUserActionView, ExportLogView, ExtrapolateView, FitCurveView, InterpolateView, \
-    CorrelationView, DimensionalReductionView, GetCsrfTokenView, DatasetDetailView, DatasetColumnsView, \
-    DeleteFeatureView, UploadView, ChangeDataView, DownloadView, RecommendDimReductionView
+    CorrelationView, DimensionalReductionView, DatasetDetailView, DatasetColumnsView, \
+    DeleteFeatureView, UploadView, ChangeDataView, DownloadView, RecommendDimReductionView, GetCsrfTokenView
 from backend.api.views.dataset_views import CreateDatasetView
 
 urlpatterns = [

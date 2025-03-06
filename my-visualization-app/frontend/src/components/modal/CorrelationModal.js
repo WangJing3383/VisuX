@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, Select, message, Typography, Spin, Slider, List } from "antd";
 import Plot from "react-plotly.js";
 
-function getCSRFToken() {
-  let cookieValue = null;
-  if (document.cookie) {
-    document.cookie.split(";").forEach((cookie) => {
-      const [name, value] = cookie.trim().split("=");
-      if (name === "csrftoken") {
-        cookieValue = decodeURIComponent(value);
-      }
-    });
-  }
-  return cookieValue;
-}
+// function getCSRFToken() {
+//   let cookieValue = null;
+//   if (document.cookie) {
+//     document.cookie.split(";").forEach((cookie) => {
+//       const [name, value] = cookie.trim().split("=");
+//       if (name === "csrftoken") {
+//         cookieValue = decodeURIComponent(value);
+//       }
+//     });
+//   }
+//   return cookieValue;
+// }
 
 const CorrelationModal = ({ visible, onCancel, uiController}) => {
   const [method, setMethod] = useState("pearson");
@@ -85,7 +85,7 @@ const CorrelationModal = ({ visible, onCancel, uiController}) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRFToken": getCSRFToken(), //  CSRF Token
+          //"X-CSRFToken": getCSRFToken(), //  CSRF Token
         },
         body: JSON.stringify(requestData),
         credentials: "include",// Cookie

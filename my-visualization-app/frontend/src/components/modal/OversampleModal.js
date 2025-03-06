@@ -5,18 +5,18 @@ const DEFAULT_OVERSMPLE_FACTOR = 2;
 const VALID_OVERSAMPLE_FACTOR = 0;
 
 // Get CSRF Token（fit Django）
-function getCSRFToken() {
-  let cookieValue = null;
-  if (document.cookie) {
-    document.cookie.split(";").forEach((cookie) => {
-      const [name, value] = cookie.trim().split("=");
-      if (name === "csrftoken") {
-        cookieValue = decodeURIComponent(value);
-      }
-    });
-  }
-  return cookieValue;
-}
+// function getCSRFToken() {
+//   let cookieValue = null;
+//   if (document.cookie) {
+//     document.cookie.split(";").forEach((cookie) => {
+//       const [name, value] = cookie.trim().split("=");
+//       if (name === "csrftoken") {
+//         cookieValue = decodeURIComponent(value);
+//       }
+//     });
+//   }
+//   return cookieValue;
+// }
 
 const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateDataset}) => {
   const [method, setMethod] = useState("smote"); // Select oversampling method
@@ -87,7 +87,7 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": getCSRFToken()  // ensure send CSRF Token
+        //"X-CSRFToken": getCSRFToken()  // ensure send CSRF Token
       },
       body: JSON.stringify(requestData),
       credentials: "include", // allow to include Cookie
@@ -140,7 +140,7 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": getCSRFToken(),  // send CSRF Token
+                //"X-CSRFToken": getCSRFToken(),  // send CSRF Token
               },
               body: JSON.stringify(requestData),
               credentials: "include", // allow to include Cookie
