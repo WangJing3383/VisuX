@@ -238,7 +238,6 @@ const InterpolationModal = ({visible, onCancel, uiController, logAction, onUpdat
                 <Select defaultValue="linear" onChange={setMethod} style={{width: "100%", marginTop: "10px"}}>
                     <Select.Option value="linear">Linear</Select.Option>
                     <Select.Option value="polynomial">Polynomial</Select.Option>
-                    <Select.Option value="spline">Spline</Select.Option>
                 </Select>
 
                 {/* Input Mode Selection */}
