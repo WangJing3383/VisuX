@@ -121,8 +121,18 @@ const CorrelationModal = ({ visible, onCancel, uiController}) => {
         placeholder="Select Columns"
         disabled={!datasetId}
         value={selectedColumns}
-        onChange={setSelectedColumns}
+        onChange={(values) => {
+          if (values.includes("ALL")) {
+            setSelectedColumns(columns);
+          } else {
+            setSelectedColumns(values);
+          }
+        }
+      }
       >
+        <Select.Option key="ALL" value="ALL">
+        Select All
+      </Select.Option>
         {columns.map((col) => (
           <Select.Option key={col} value={col}>{col}</Select.Option>
         ))}
@@ -164,6 +174,12 @@ const CorrelationModal = ({ visible, onCancel, uiController}) => {
                 title: "Feature Correlation Heatmap",
                 width: 650,
                 height: 500,
+                margin: { l: 150, r: 50, t: 50, b: 100 },
+                yaxis: {
+                  tickangle: -45, 
+                  automargin: true, 
+                  tickfont: { size: 10 },
+                },
               }}
           />
         </div>
