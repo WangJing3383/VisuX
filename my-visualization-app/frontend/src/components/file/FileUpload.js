@@ -3,18 +3,18 @@ import { Upload, Button, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
 // Get CSRF Token (fit Django)
-function getCSRFToken() {
-  let cookieValue = null;
-  if (document.cookie) {
-    document.cookie.split(";").forEach((cookie) => {
-      const [name, value] = cookie.trim().split("=");
-      if (name === "csrftoken") {
-        cookieValue = decodeURIComponent(value);
-      }
-    });
-  }
-  return cookieValue;
-}
+// function getCSRFToken() {
+//   let cookieValue = null;
+//   if (document.cookie) {
+//     document.cookie.split(";").forEach((cookie) => {
+//       const [name, value] = cookie.trim().split("=");
+//       if (name === "csrftoken") {
+//         cookieValue = decodeURIComponent(value);
+//       }
+//     });
+//   }
+//   return cookieValue;
+// }
 
 const FileUpload = ({ datasetManager }) => {
   const [uploading, setUploading] = useState(false);
@@ -34,7 +34,7 @@ const FileUpload = ({ datasetManager }) => {
     try {
       const response = await fetch("http://127.0.0.1:8000/api/upload/", {
         method: "POST",
-        headers: { "X-CSRFToken": getCSRFToken() },
+        // headers: { "X-CSRFToken": getCSRFToken() },
         body: formData,
         credentials: "include",
       });

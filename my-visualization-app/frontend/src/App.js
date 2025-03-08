@@ -10,6 +10,7 @@ import { useEffect } from "react";
 
 const { Header, Sider, Content } = Layout;
 
+//This can be changed to any function that simply identifies that the database needs to be emptied.
 const fetchCsrfToken = async () => {
   try {
     const response = await fetch("http://localhost:8000/api/get_csrf_token/", {

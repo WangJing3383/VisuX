@@ -15,7 +15,7 @@ import pandas as pd
 
 # Define BASE_DIR to point to the project root directory.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-@method_decorator(csrf_exempt, name='dispatch')
+# @method_decorator(csrf_exempt, name='dispatch')
 class UploadView(APIView):
     """
     Uploading files and parsing them into datasets for storage in the Dataset database

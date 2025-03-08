@@ -79,66 +79,66 @@ class UIController {
     }
   }
 
-  /**
-   * Send POST request (supports timeout)
-   */
-  async postRequest(url, data, headers = {}) {
-    try {
-      console.log(`📡 Sending POST request to: ${url}`, data);
+  // /**
+  //  * Send POST request (supports timeout)
+  //  */
+  // async postRequest(url, data, headers = {}) {
+  //   try {
+  //     console.log(`📡 Sending POST request to: ${url}`, data);
+  //
+  //     // Getting a CSRF Token (for Django)
+  //     const csrfToken = this.getCSRFToken();
+  //     if (csrfToken) {
+  //       headers["X-CSRFToken"] = csrfToken;
+  //     }
+  //
+  //     // Request Timeout Control
+  //     const controller = new AbortController();
+  //     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds timeout
+  //
+  //     const response = await fetch(url, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         ...headers,
+  //       },
+  //       body: JSON.stringify(data),
+  //       credentials: "include",
+  //       signal: controller.signal,
+  //     });
+  //
+  //     clearTimeout(timeoutId);
+  //
+  //     if (!response.ok) {
+  //       const errorMessage = await response.text();
+  //       console.error(`API request failed: ${url} (${response.status})`, errorMessage);
+  //       throw new Error(`Request failed: ${response.status} - ${errorMessage}`);
+  //     }
+  //
+  //     const responseData = await response.json();
+  //     console.log(`Response received from ${url}:`, responseData);
+  //     return responseData;
+  //   } catch (error) {
+  //     console.error(`Network/API error for ${url}:`, error);
+  //     return { error: error.message };
+  //   }
+  // }
 
-      // Getting a CSRF Token (for Django)
-      const csrfToken = this.getCSRFToken();
-      if (csrfToken) {
-        headers["X-CSRFToken"] = csrfToken;
-      }
-
-      // Request Timeout Control
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds timeout
-
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...headers,
-        },
-        body: JSON.stringify(data),
-        credentials: "include",
-        signal: controller.signal,
-      });
-
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        console.error(`API request failed: ${url} (${response.status})`, errorMessage);
-        throw new Error(`Request failed: ${response.status} - ${errorMessage}`);
-      }
-
-      const responseData = await response.json();
-      console.log(`Response received from ${url}:`, responseData);
-      return responseData;
-    } catch (error) {
-      console.error(`Network/API error for ${url}:`, error);
-      return { error: error.message };
-    }
-  }
-
-  /**
-   * Getting a CSRF Token (for Django)
-   */
-  getCSRFToken() {
-    let cookieValue = null;
-    if (document.cookie) {
-      document.cookie.split(";").forEach((cookie) => {
-        const [name, value] = cookie.trim().split("=");
-        if (name === "csrftoken") {
-          cookieValue = decodeURIComponent(value);
-        }
-      });
-    }
-    return cookieValue;
-  }
+  // /**
+  //  * Getting a CSRF Token (for Django)
+  //  */
+  // getCSRFToken() {
+  //   let cookieValue = null;
+  //   if (document.cookie) {
+  //     document.cookie.split(";").forEach((cookie) => {
+  //       const [name, value] = cookie.trim().split("=");
+  //       if (name === "csrftoken") {
+  //         cookieValue = decodeURIComponent(value);
+  //       }
+  //     });
+  //   }
+  //   return cookieValue;
+  // }
 
   /* ============== GETTERS & SETTERS ============== */
 

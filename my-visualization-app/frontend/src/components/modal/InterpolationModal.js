@@ -5,18 +5,18 @@ const EMPTY_DATA_NUMBER = 0;
 const FIRST_ELEMENT_INDEX = 0;
 
 // Get CSRF Token（fit Django）
-function getCSRFToken() {
-    let cookieValue = null;
-    if (document.cookie) {
-        document.cookie.split(";").forEach((cookie) => {
-            const [name, value] = cookie.trim().split("=");
-            if (name === "csrftoken") {
-                cookieValue = decodeURIComponent(value);
-            }
-        });
-    }
-    return cookieValue;
-}
+// function getCSRFToken() {
+//     let cookieValue = null;
+//     if (document.cookie) {
+//         document.cookie.split(";").forEach((cookie) => {
+//             const [name, value] = cookie.trim().split("=");
+//             if (name === "csrftoken") {
+//                 cookieValue = decodeURIComponent(value);
+//             }
+//         });
+//     }
+//     return cookieValue;
+// }
 
 const InterpolationModal = ({visible, onCancel, uiController, logAction, onUpdateDataset, onClose}) => {
     const [method, setMethod] = useState("linear");
@@ -70,7 +70,7 @@ const InterpolationModal = ({visible, onCancel, uiController, logAction, onUpdat
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-CSRFToken": getCSRFToken(),  // send CSRF Token
+                    //"X-CSRFToken": getCSRFToken(),  // send CSRF Token
                 },
                 body: JSON.stringify(requestData),
                 credentials: "include", // allow to include Cookie
@@ -100,7 +100,7 @@ const InterpolationModal = ({visible, onCancel, uiController, logAction, onUpdat
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": getCSRFToken(),  // send CSRF Token
+                //"X-CSRFToken": getCSRFToken(),  // send CSRF Token
             },
             body: JSON.stringify(requestData),
             credentials: "include", // allow to include Cookie
@@ -238,7 +238,6 @@ const InterpolationModal = ({visible, onCancel, uiController, logAction, onUpdat
                 <Select defaultValue="linear" onChange={setMethod} style={{width: "100%", marginTop: "10px"}}>
                     <Select.Option value="linear">Linear</Select.Option>
                     <Select.Option value="polynomial">Polynomial</Select.Option>
-                    <Select.Option value="spline">Spline</Select.Option>
                 </Select>
 
                 {/* Input Mode Selection */}

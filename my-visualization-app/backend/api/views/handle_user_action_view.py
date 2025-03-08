@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 import json
 import pandas as pd
 
-@method_decorator(csrf_exempt, name='dispatch')
+# @method_decorator(csrf_exempt, name='dispatch')
 class HandleUserActionView(APIView):
     def post(self, request):
         """
