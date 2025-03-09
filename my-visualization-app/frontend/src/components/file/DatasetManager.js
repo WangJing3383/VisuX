@@ -39,11 +39,11 @@ class DatasetManager {
   getSuffix(name) {
     let count = COUNT
     for(const datasetName of this.datasetMap.values()){
-      if(datasetName == name){
+      if(datasetName === name){
         count++;
       }
     }
-    if(count == ONE_SAME_DATASET_NAME){
+    if(count === ONE_SAME_DATASET_NAME){
       return ""
     }else{
       return "(" + count.toString() + ")"
