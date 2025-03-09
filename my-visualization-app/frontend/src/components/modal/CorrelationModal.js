@@ -134,10 +134,10 @@ const CorrelationModal = ({ visible, onCancel, uiController}) => {
       }
       >
         <Select.Option key="ALL" value="ALL">
-        Select All
+        Select All Features
       </Select.Option>
       <Select.Option key="DELETE ALL" value="DELETE ALL">
-        Delete All
+        Delete All Features
       </Select.Option>
         {columns.map((col) => (
           <Select.Option key={col} value={col}>{col}</Select.Option>
