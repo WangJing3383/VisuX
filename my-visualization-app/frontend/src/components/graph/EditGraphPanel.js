@@ -11,12 +11,12 @@ const EditGraphPanel = () => {
   const [graphDetails, setGraphDetails] = useState([]); //holds the graph details of the graph to be edited (empty at first because no graph is selected yet)
   const [selectedGraphForEdit, setSelectedGraphForEdit] = useState(null); // the actual graph currently selected for editing
   const [editColor, setEditColor] = useState("#ffffff"); // color of the selected graph (white when no graph available)
-  //axes have a seperate use states for updating related buttons dynamically
+  //axes have a separate use states for updating related buttons dynamically
   const [selectedX, setSelectedX] = useState(null); // x-axis of the selected graph
   const [selectedY, setSelectedY] = useState(null); // y-axis of the selected graph
   const [selectedZ, setSelectedZ] = useState(null); // z-axis of the selected graph
   const [curveFitVisible, setCurveFitVisible] = useState(false); // curve fitting line of the selected graph
-  const [additionalYAxes, setAdditionalYAxes] = useState([]); // more y axes of the selected graph (empty array isntead of null because there can be more than 1 additional axes)
+  const [additionalYAxes, setAdditionalYAxes] = useState([]); // more y axes of the selected graph (empty array instead of null because there can be more than 1 additional axes)
   //for filtering and showing data points from x axes
   const [filterData, setFilterData] = useState({
     include: [], //include filter for data points/ x-axis
@@ -37,7 +37,7 @@ const EditGraphPanel = () => {
         dataset: graph.dataset || {},
         color: graph.style?.colorScheme,
         style: graph.style,
-        graphObject: graph, // original graph object to ensure that graph is actualy a "graph" object
+        graphObject: graph, // original graph object to ensure that graph is actually a "graph" object
         graphDatasetId: graph.datasetId,
       }));
       setGraphDetails(graphs);
@@ -143,7 +143,7 @@ const EditGraphPanel = () => {
       selectedGraph?.graphObject?.getDataset &&
       selectedGraph.graphObject.getDataset();
 
-      //if dataset doesnt exist there are no features to select
+      //if dataset doesn't exist there are no features to select
     if (!dataset) {
       return (
         <Select disabled placeholder="No Features Available" style={{ width: 200 }} />

@@ -4,20 +4,6 @@ import {Modal, Button, Input, Select, message, Table, InputNumber, Radio} from "
 const EMPTY_DATA_NUMBER = 0;
 const FIRST_ELEMENT_INDEX = 0;
 
-// Get CSRF Token（fit Django）
-// function getCSRFToken() {
-//     let cookieValue = null;
-//     if (document.cookie) {
-//         document.cookie.split(";").forEach((cookie) => {
-//             const [name, value] = cookie.trim().split("=");
-//             if (name === "csrftoken") {
-//                 cookieValue = decodeURIComponent(value);
-//             }
-//         });
-//     }
-//     return cookieValue;
-// }
-
 const ExtrapolationModal = ({visible, onCancel, uiController, logAction, onUpdateDataset, onClose}) => {
     const [method, setMethod] = useState("linear");
     const [datasetId, setDatasetId] = useState(null);
@@ -84,7 +70,6 @@ const ExtrapolationModal = ({visible, onCancel, uiController, logAction, onUpdat
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    //"X-CSRFToken": getCSRFToken(),  // send CSRF Token
                 },
                 body: JSON.stringify(requestData),
                 credentials: "include", // allow to include Cookie
@@ -195,7 +180,6 @@ const ExtrapolationModal = ({visible, onCancel, uiController, logAction, onUpdat
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                //"X-CSRFToken": getCSRFToken(),  // send CSRF Token
             },
             body: JSON.stringify(requestData),
             credentials: "include", // allow to include Cookie

@@ -12,16 +12,6 @@ class TableManager {
         }
     }
 
-    registerTable(tableId, datasetId) {
-        this.tables.set(tableId, datasetId);
-    }
-
-    //
-    createTable(name, values) {
-    const tableId = `table_${Date.now()}`;
-    this.tables.set(tableId, { name, values });
-}
-
 }
 
 export default TableManager;

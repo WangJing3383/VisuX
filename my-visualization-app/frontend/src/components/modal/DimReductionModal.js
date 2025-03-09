@@ -3,19 +3,6 @@ import {Modal, Radio, InputNumber, Button, message, Table} from "antd";
 import axios from "axios";
 import datasetManager from "../file/DatasetManager";
 
-// const getCSRFToken = () => {
-//     let cookieValue = null;
-//     if (document.cookie) {
-//         document.cookie.split(";").forEach((cookie) => {
-//             const [name, value] = cookie.trim().split("=");
-//             if (name === "csrftoken") {
-//                 cookieValue = decodeURIComponent(value);
-//             }
-//         });
-//     }
-//     return cookieValue;
-// };
-
 const DimReductionModal = ({visible, onClose, onUpdateDataset, logAction, datasetId}) => {
     const [method, setMethod] = useState("pca");
     const [nComponents, setNComponents] = useState(2);
@@ -69,7 +56,6 @@ const DimReductionModal = ({visible, onClose, onUpdateDataset, logAction, datase
                 },
                 {
                     headers: {
-                        //"X-CSRFToken": getCSRFToken(),
                         "Content-Type": "application/json",
                     },
                     withCredentials: true,
@@ -113,7 +99,6 @@ const DimReductionModal = ({visible, onClose, onUpdateDataset, logAction, datase
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                //"X-CSRFToken": getCSRFToken(),
             },
             body: JSON.stringify(requestData),
             credentials: "include",

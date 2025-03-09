@@ -1,29 +1,15 @@
 import React, {useEffect, useState} from "react";
 import { Modal, Button, InputNumber, Select, message, Table } from "antd";
 
-const DEFAULT_OVERSMPLE_FACTOR = 2;
+const DEFAULT_OVERSAMPLE_FACTOR = 2;
 const VALID_OVERSAMPLE_FACTOR = 0;
-
-// Get CSRF Token（fit Django）
-// function getCSRFToken() {
-//   let cookieValue = null;
-//   if (document.cookie) {
-//     document.cookie.split(";").forEach((cookie) => {
-//       const [name, value] = cookie.trim().split("=");
-//       if (name === "csrftoken") {
-//         cookieValue = decodeURIComponent(value);
-//       }
-//     });
-//   }
-//   return cookieValue;
-// }
 
 const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateDataset}) => {
   const [method, setMethod] = useState("smote"); // Select oversampling method
   const [datasetId, setDatasetId] = useState(null);
   const [xColumn, setXColumn] = useState(null);
   const [yColumn, setYColumn] = useState(null);
-  const [factor, setOversamplingFactor] = useState(DEFAULT_OVERSMPLE_FACTOR); // Default oversampling multiplier
+  const [factor, setOversamplingFactor] = useState(DEFAULT_OVERSAMPLE_FACTOR); // Default oversampling multiplier
 
   const [columns, setColumns] = useState([]); // Store column names
   const [originalData, setOriginalData] = useState([]);
@@ -87,7 +73,6 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        //"X-CSRFToken": getCSRFToken()  // ensure send CSRF Token
       },
       body: JSON.stringify(requestData),
       credentials: "include", // allow to include Cookie
@@ -98,7 +83,6 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
       if (Array.isArray(oversampled_records) && oversampled_records.length) {
         setOversampledFeature(oversampled_features)
         setOversampledRecord(oversampled_records)
-        //setNewDatasetId(new_dataset_id);
     } else {
         setOversampledData(null);
     }

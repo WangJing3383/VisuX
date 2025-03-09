@@ -10,7 +10,6 @@ const visualizationManager = new VisualizationManager();
 const GraphSection = ({ updateGraphCards }) => {
     const [graphDetails, setGraphDetails] = useState([]);
     const [loading, setLoading] = useState(true);
-    // const [combineGraphs, setCombineGraphs] = useState(false);
 
     const [visibleGraphs, setVisibleGraphs] = useState(() => {
         const savedState = localStorage.getItem("visibleGraphs");
@@ -120,71 +119,6 @@ const GraphSection = ({ updateGraphCards }) => {
         return newCards;
     });
 };
-
-
-
-    // const handleLayerGraphs = () => {
-    //     setCombineGraphs((prevCombine) => {
-    //         const newCombineState = !prevCombine;
-
-    //         if (newCombineState) {
-    //             // combine data
-    //             const combinedData = graphDetails
-    //                 .filter(graph => visibleGraphs[graph.graphId])
-    //                 .map((graph, index) => ({
-    //                     ...graph.graphScript?.data[0],
-    //                     name: graph.graphName,
-    //                     line: { color: graph.color || `hsl(${(index * 50) % 360}, 100%, 50%)` },
-    //                 }));
-
-    //             const layout = {
-    //                 title: "Combined Graphs",
-    //                 xaxis: { title: graphDetails[0]?.xAxis || "X-axis" },
-    //                 yaxis: { title: graphDetails[0]?.yAxis || "Y-axis" },
-    //                 showlegend: true,
-    //             };
-
-    //             updateGraphCards({ combinedGraph: { graphId: "combinedGraph", graphScript: { data: combinedData, layout } } });
-
-    //             // hide `GraphCard`
-    //             setVisibleGraphs(() => {
-    //                 const newState = {};
-    //                 graphDetails.forEach(graph => {
-    //                     newState[graph.graphId] = false;
-    //                 });
-    //                 localStorage.setItem("visibleGraphs", JSON.stringify(newState));
-    //                 return newState;
-    //             });
-
-    //         } else {
-    //             // show `GraphCard`
-    //             updateGraphCards((prevCards) => {
-    //                 const newCards = { ...prevCards };
-    //                 delete newCards["combinedGraph"];
-
-    //                 graphDetails.forEach(graph => {
-    //                     if (visibleGraphs[graph.graphId]) {
-    //                         newCards[graph.graphId] = graph;
-    //                     }
-    //                 });
-
-    //                 return newCards;
-    //             });
-
-
-    //             setVisibleGraphs(() => {
-    //                 const newState = {};
-    //                 graphDetails.forEach(graph => {
-    //                     newState[graph.graphId] = true;
-    //                 });
-    //                 localStorage.setItem("visibleGraphs", JSON.stringify(newState));
-    //                 return newState;
-    //             });
-    //         }
-
-    //         return newCombineState;
-    //     });
-    // };
 
     return (
         <Card style={{ height: "100%", display: "flex", flexDirection: "column" }}>

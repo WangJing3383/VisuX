@@ -23,35 +23,9 @@ class Graph {
     this.moreYAxes = [];
   }
 
-  updateDataset(newDataset) {
-    this.dataset = newDataset;
-    this.updatedAt = new Date();
-  }
-
   changeColor(newColor) {
     this.style.setColorScheme(newColor);
     this.updatedAt = new Date();
-  }
-
-  updateStyle(newStyle) {
-    if (newStyle instanceof GraphStyle) {
-      this.style = newStyle;
-    } else {
-      Object.assign(this.style, newStyle);
-    }
-    this.updatedAt = new Date();
-  }
-
-  switchType(newType) {
-    this.setType(newType);
-  }
-
-  setMetadata(metadata) {
-    this.metadata = { ...this.metadata, ...metadata };
-  }
-
-  getMetadata() {
-    return this.metadata;
   }
 
   toggleVisibility() {
@@ -59,26 +33,14 @@ class Graph {
     this.updatedAt = new Date();
   }
 
-  getXAxis() {
-    return this.xAxis;
-  }
-
   setXAxis(xAxis) {
     this.selectedFeatures[0] = xAxis;
     this.xAxis = xAxis;
   }
 
-  getYAxis() {
-    return this.yAxis;
-  }
-
   setYAxis(yAxis) {
     this.selectedFeatures[1] = yAxis;
     this.yAxis = yAxis;
-  }
-
-  getZAxis() {
-    return this.zAxis;
   }
 
   setZAxis(zAxis) {
@@ -90,17 +52,9 @@ class Graph {
     return this.dataset;
   }
 
-  setDataset(newDataset) {
-    this.dataset = newDataset;
-  }
-
   setFittedCurve(fittedCurve) {
     this.fittedCurve = fittedCurve;
     this.updatedAt = new Date();
-  }
-
-  getFittedCurve() {
-    return this.fittedCurve;
   }
 
   setMoreYAxes(newMoreYAxes) {
@@ -109,10 +63,6 @@ class Graph {
 
   getMoreYAxes() {
     return this.moreYAxes;
-  }
-
-  getType() {
-    return this.type;
   }
 
   setType(newType) {

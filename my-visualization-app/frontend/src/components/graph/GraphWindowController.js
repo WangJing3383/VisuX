@@ -78,18 +78,6 @@ class GraphWindowController {
   }
 
   /**
-   * Open window by Graph ID
-   */
-  openGraphWindowById(graphId) {
-    const graphData = this.graphManager.getGraphById(graphId);
-    if (!graphData) {
-      console.error(`Graph ID ${graphId} not found.`);
-      return null;
-    }
-    return this.openGraphWindow(graphData);
-  }
-
-  /**
    * Close the window and remove the DOM
    */
   closeGraphWindow(windowId) {
@@ -101,33 +89,6 @@ class GraphWindowController {
       return true;
     }
     console.warn(`Cannot close window. ID ${windowId} not found.`);
-    return false;
-  }
-
-  /**
-   * Get window object
-   */
-  getGraphWindowById(windowId) {
-    return this.windows.get(windowId) || null;
-  }
-
-  /**
-   * Get all windows
-   */
-  getAllGraphWindows() {
-    return Array.from(this.windows.values());
-  }
-
-  /**
-   * Update the Graph data of the window
-   */
-  updateGraphWindow(windowId, newGraphData) {
-    if (this.windows.has(windowId)) {
-      const window = this.windows.get(windowId);
-      window.graphData = newGraphData;
-      this.visualizationManager.renderChart(newGraphData); // Re-render
-      return true;
-    }
     return false;
   }
 }

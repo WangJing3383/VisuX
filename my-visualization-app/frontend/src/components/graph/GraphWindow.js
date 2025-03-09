@@ -1,7 +1,6 @@
 import React from "react";
 import Draggable from "react-draggable";
 import { Card, Button } from "antd";
-//import { CloseOutlined } from "@ant-design/icons";
 import GraphComponent from "./GraphComponent";
 
 const GraphWindow = ({ graph, onClose }) => {

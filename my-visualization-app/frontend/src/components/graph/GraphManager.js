@@ -81,7 +81,7 @@ class GraphManager {
   /**
    * 
    * @param {*} graphId graphId to be deleted
-   * @returns true if deleted succesfully, false if graph not found
+   * @returns true if deleted successfully, false if graph not found
    */
   deleteGraph(graphId) {
     if (this.graphs.has(graphId)) {
@@ -163,21 +163,6 @@ class GraphManager {
   }
  }
 
- /**
-  * 
-  * @param {*} graphId graph to hide/show
-  */
- changeVisibility(graphId) {
-  const graph = this.graphs.get(graphId);
-  if (graph) {
-    graph.toggleVisibility();
-    console.log(`Graph (ID: ${graphId}) changed visibility.`);
-  } else {
-    console.warn(`GraphManager: Graph ID ${graphId} not found.`);
-}
-
- }
-
   /**
    * 
    * @param {*} graphId graph that its datapoints to be changed
@@ -234,24 +219,7 @@ class GraphManager {
     return true;
   }
 
-  /**
-   * 
-   * @param {*} graphId graph to be changed
-   * @param {*} axisToRemove feature of the axis to be removed
-   * @returns 
-   */
-  removeMoreYAxis(graphId, axisToRemove) {
-    const graph = this.graphs.get(graphId);
-    if (!graph) {
-      console.warn(`Graph ID ${graphId} not found.`);
-      return false;
-    }
-    const updatedAxes = graph.getMoreYAxes().filter(axis => axis !== axisToRemove);
-    graph.setMoreYAxes(updatedAxes);
-    return true;
-  }
-
-  //these 3 are all related to notifying other claasses about changes
+  //these 3 are all related to notifying other classes about changes
 
   /**
    * 

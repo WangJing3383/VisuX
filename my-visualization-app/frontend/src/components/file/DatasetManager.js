@@ -69,28 +69,9 @@ class DatasetManager {
     return this.currentDatasetId;
   }
 
-  // Delete dataset ID
-  removeDatasetId(datasetId) {
-    if (this.datasetIds.has(datasetId)) {
-      this.datasetIds.delete(datasetId);
-      console.log(`Dataset ID ${datasetId} removed.`);
-      // If you are deleting the current dataset, reset the currentDatasetId.
-      if (this.currentDatasetId === datasetId) {
-        this.currentDatasetId = this.datasetIds.size > 0 ? [...this.datasetIds].pop() : null;
-      }
-    } else {
-      console.warn(`Dataset ID ${datasetId} not found.`);
-    }
-  }
-
   // Get all dataset IDs
   getAllDatasetsId() {
     return Array.from(this.datasetIds);
-  }
-
-  //Get all dataset names
-  getAllDatasetsName() {
-    return Array.from(this.datasetMap.values());
   }
 
 

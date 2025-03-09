@@ -21,11 +21,6 @@ class LogManager {
     console.log("Logged operation:", logEntry);
   }
 
-
-  getDatasetVersions() {
-    return this.datasetVersions;
-  }
-
   getLogs(){
       return this.logs;
   }

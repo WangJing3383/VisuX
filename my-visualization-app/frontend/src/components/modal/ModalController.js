@@ -19,21 +19,8 @@ class ModalController {
     console.log('Closed modal');
   }
 
-  updateModalData(newData) {
-    if (this.modalActive) {
-      this.data = newData;
-      console.log('Updated modal data:', newData);
-    } else {
-      console.warn('Cannot update modal data. No modal is active.');
-    }
-  }
-
   isModalActive(modalType) {
     return this.modalActive && this.activeModal === modalType;
-  }
-
-  getActiveModal() {
-    return this.activeModal;
   }
 
   getModalData() {
