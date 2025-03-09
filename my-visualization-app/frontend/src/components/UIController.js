@@ -142,49 +142,49 @@ class UIController {
 
   /* ============== GETTERS & SETTERS ============== */
 
-  setModalController(modalController) {
-    this.modalController = modalController;
-  }
-
-  setGraphWindowController(graphWindowController) {
-    this.graphWindowController = graphWindowController;
-  }
-
-  setToolManager(toolManager) {
-    this.toolManager = toolManager;
-  }
-
-  setImageDisplayArea(imageDisplayArea) {
-    this.imageDisplayArea = imageDisplayArea;
-  }
+  // setModalController(modalController) {
+  //   this.modalController = modalController;
+  // }
+  //
+  // setGraphWindowController(graphWindowController) {
+  //   this.graphWindowController = graphWindowController;
+  // }
+  //
+  // setToolManager(toolManager) {
+  //   this.toolManager = toolManager;
+  // }
+  //
+  // setImageDisplayArea(imageDisplayArea) {
+  //   this.imageDisplayArea = imageDisplayArea;
+  // }
 
   getModalController() {
     return this.modalController;
   }
 
-  getGraphWindowController() {
-    return this.graphWindowController;
-  }
-
-  getToolManager() {
-    return this.toolManager;
-  }
-
-  getImageDisplayArea() {
-    return this.imageDisplayArea;
-  }
-
-  openGraphWindow(graphId) {
-    return this.graphWindowController.openGraphWindowById(graphId);
-  }
-
-  closeGraphWindow(windowId) {
-    return this.graphWindowController.closeGraphWindow(windowId);
-  }
-
-  getGraphWindows() {
-    return this.graphWindowController.getGraphWindows();
-  }
+  // getGraphWindowController() {
+  //   return this.graphWindowController;
+  // }
+  //
+  // getToolManager() {
+  //   return this.toolManager;
+  // }
+  //
+  // getImageDisplayArea() {
+  //   return this.imageDisplayArea;
+  // }
+  //
+  // openGraphWindow(graphId) {
+  //   return this.graphWindowController.openGraphWindowById(graphId);
+  // }
+  //
+  // closeGraphWindow(windowId) {
+  //   return this.graphWindowController.closeGraphWindow(windowId);
+  // }
+  //
+  // getGraphWindows() {
+  //   return this.graphWindowController.getGraphWindows();
+  // }
 
   getLogManager() {
     return this.logManager;

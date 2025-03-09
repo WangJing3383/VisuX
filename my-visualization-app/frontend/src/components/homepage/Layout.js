@@ -62,7 +62,7 @@ const LayoutContainer = ({uiController, showGraph, showData, showLog, showTable,
   const [layout, setLayout] = useState(defaultLayout);
   const [gridWidth, setGridWidth] = useState(gridConfig.width);
 
-  const [graphWindows, setGraphWindows] = useState([]);
+  // const [graphWindows, setGraphWindows] = useState([]);
   const [graphCards, setGraphCards] = useState({});
 
  // const logManager = uiController.getLogManager(); // Access to the log manager via UIController

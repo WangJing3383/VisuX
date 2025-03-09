@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from "react";
-import {Button, Layout, Menu, message} from "antd";
+import {Layout, Menu, message} from "antd";
 import {
     BarChartOutlined,
     TableOutlined,
-    FileTextOutlined, SlidersOutlined, FundOutlined, LineChartOutlined, BuildOutlined,
+    FileTextOutlined, SlidersOutlined, FundOutlined, LineChartOutlined,
 } from "@ant-design/icons";
 import datasetManager from "../file/DatasetManager";
 import DimReductionModal from "../modal/DimReductionModal";

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Modal, Radio, InputNumber, Button, message, Table, Tooltip} from "antd";
+import {Modal, Radio, InputNumber, Button, message, Table} from "antd";
 import axios from "axios";
 import datasetManager from "../file/DatasetManager";
 

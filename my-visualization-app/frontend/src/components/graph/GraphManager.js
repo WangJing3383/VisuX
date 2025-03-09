@@ -1,4 +1,3 @@
-import { enableMock, mockGraphs } from "./mockData";
 import VisualizationManager from "./VisualizationManager";
 import Graph from "./Graph";
 

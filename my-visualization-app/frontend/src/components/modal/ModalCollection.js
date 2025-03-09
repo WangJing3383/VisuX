@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Select, Progress, Button } from "antd";
+import { Modal, Select, Progress} from "antd";
 
 const ModalCollection = ({ uiController }) => {
   const modalController = uiController.getModalController();
