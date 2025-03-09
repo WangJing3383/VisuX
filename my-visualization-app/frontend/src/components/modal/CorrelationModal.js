@@ -123,19 +123,21 @@ const CorrelationModal = ({ visible, onCancel, uiController}) => {
         value={selectedColumns}
         onChange={(values) => {
           if (values.includes("ALL")) {
-            if(selectedColumns.includes("ALL")){
-              setSelectedColumns([])
-            } else{
               setSelectedColumns(columns);
-            }
           } else {
             setSelectedColumns(values);
+          }
+          if(values.includes("DELETE ALL")){
+            setSelectedColumns([])
           }
         }
       }
       >
         <Select.Option key="ALL" value="ALL">
         Select All
+      </Select.Option>
+      <Select.Option key="DELETE ALL" value="DELETE ALL">
+        Delete All
       </Select.Option>
         {columns.map((col) => (
           <Select.Option key={col} value={col}>{col}</Select.Option>
