@@ -123,7 +123,11 @@ const CorrelationModal = ({ visible, onCancel, uiController}) => {
         value={selectedColumns}
         onChange={(values) => {
           if (values.includes("ALL")) {
-            setSelectedColumns(columns);
+            if(selectedColumns.includes("ALL")){
+              setSelectedColumns([])
+            } else{
+              setSelectedColumns(columns);
+            }
           } else {
             setSelectedColumns(values);
           }
