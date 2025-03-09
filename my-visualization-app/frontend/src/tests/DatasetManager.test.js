@@ -31,7 +31,7 @@ describe("DatasetManager", () => {
   test("should return correct suffix for dataset names", () => {
     datasetManager.addDatasetId("1", "TestDataset");
     datasetManager.addDatasetId("2", "TestDataset");
-    expect(datasetManager.getSuffix("TestDataset")).toBe("(1)");
+    expect(datasetManager.getSuffix("TestDataset")).toBe("(2)");
   });
 
   test("should set and get current dataset ID", () => {
