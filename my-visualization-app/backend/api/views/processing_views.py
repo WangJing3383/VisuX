@@ -147,22 +147,6 @@ class ExtrapolateView(APIView):
                 target_x=extrapolate_range,
                 method=method
             )
-            """
-            # Generate new features and records
-            reduced_features = [x_feature, y_feature]
-            reduced_records = extrapolated_data.to_dict(orient="records")
-            for record in reduced_records:
-                for key in record:
-                    if isinstance(record[key], np.generic):
-                        record[key] = record[key].item()  # convert to Python 
-            # Create a new Dataset and associate it with last_dataset
-            new_dataset = Dataset.objects.create(
-                name=new_dataset_name,
-                features=reduced_features,
-                records=reduced_records,
-                last_dataset=dataset  # Linked original dataset
-            )
-            """
 
             # Convert the DataFrame to a dictionary and return it to the frontend
             result = extrapolated_data.to_dict(orient='records')
