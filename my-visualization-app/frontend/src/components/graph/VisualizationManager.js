@@ -58,9 +58,15 @@ class VisualizationManager {
   // Main method that visualizes the graph by using smaller methods and connecting them
   visualize(graph) {
     const { dataset, type, selectedFeatures = [], fittedCurve} = graph;
-
+    
     // Checking the type and dataset to see if the graph object is valid
     if (!type || !dataset || typeof dataset !== this.OBJECT) {
+      return null;
+    }
+
+    //Checking if type is one of the types from the Chart Categories
+    if (!this.#isValidChartType(type)) {
+      console.warn(this.UNVALID_TYPE_ERROR, type);
       return null;
     }
 
@@ -95,6 +101,13 @@ class VisualizationManager {
 
     return { data: traces, layout };
   }
+
+  #isValidChartType(type) {
+    return Object.values(this.chartCategories).some(category =>
+      category.some(chart => chart.type === type)
+    );
+  }
+  
 
   // Extracts data from the dataset related to the selected features
   #extractFeatureData(dataset, selectedFeatures) {
