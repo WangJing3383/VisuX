@@ -1,4 +1,4 @@
-import GraphStyle from './GraphStyle';
+import GraphStyle from '../components/graph/GraphStyle';
 
 describe('GraphStyle Class', () => {
   let graphStyle;

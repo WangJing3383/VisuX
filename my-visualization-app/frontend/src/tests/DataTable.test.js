@@ -1,11 +1,11 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import DataTable from "./DataTable"
-import datasetManager from "../file/DatasetManager";
+import DataTable from "../components/table/DataTable"
+import datasetManager from "../components/file/DatasetManager";
 import { message } from "antd";
 
 // Mock datasetManager functions
-jest.mock("../file/DatasetManager", () => ({
+jest.mock("../components/file/DatasetManager", () => ({
   getCurrentDatasetId: jest.fn(),
 }));
 

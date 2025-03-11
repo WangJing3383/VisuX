@@ -1,9 +1,9 @@
-import Graph from './Graph';
-import GraphStyle from './GraphStyle';
-import { chartCategories } from './ChartCategories';
+import Graph from '../components/graph/Graph';
+import GraphStyle from '../components/graph/GraphStyle';
+import { chartCategories } from '../components/graph/ChartCategories';
 
-jest.mock('./GraphStyle');
-jest.mock('./ChartCategories');
+jest.mock('../components/graph/GraphStyle');
+jest.mock('../components/graph/ChartCategories');
 
 describe('Graph class', () => {
   let graph;

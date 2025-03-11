@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Card, Select, Spin, message, Button } from "antd";
+import { Card, Select, Spin, message, Button, Slider } from "antd";
 import { FullscreenOutlined, FullscreenExitOutlined } from "@ant-design/icons";
 import screenfull from "screenfull";
 import {
@@ -16,6 +16,7 @@ const DataWindow = () => {
     const [loading, setLoading] = useState(true); // Loading state indicator
     const [datasetId, setDatasetId] = useState(null); // Stores current dataset ID
     const [isFullscreen, setIsFullscreen] = useState(false); // Fullscreen state
+    const [range, setRange] = useState([0, 20]); // Data range for display
     const chartRef = useRef(null); // Reference for the chart container
 
     // Fetch the current dataset ID from DatasetManager on component mount
@@ -89,10 +90,13 @@ const DataWindow = () => {
         }
     }, []);
 
+    // Slice the data for visualization based on range
+    const visibleData = data.slice(range[0], range[1]);
+
     return (
         <Card
             title="Data Plot"
-            style={{ width: "100%", minHeight: "400px", position: "relative" }}
+            style={{ width: "100%", minHeight: "500px", position: "relative" }}
         >
             {loading ? (
                 <Spin tip="Loading data..." />
@@ -113,8 +117,20 @@ const DataWindow = () => {
                                     <Option key={feature} value={feature}>{feature}</Option>
                                 ))}
                             </Select>
+
+                            {/* Slider for selecting data range */}
+                            <Slider
+                                range
+                                min={0}
+                                max={data.length - 1}
+                                step={1}
+                                value={range}
+                                onChange={setRange}
+                                style={{ marginBottom: "16px" }}
+                            />
+
                             <ResponsiveContainer width="100%" height={300}>
-                                <LineChart data={data}>
+                                <LineChart data={visibleData}>
                                     <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis dataKey="id" />
                                     <YAxis />
@@ -129,6 +145,7 @@ const DataWindow = () => {
                                     )}
                                 </LineChart>
                             </ResponsiveContainer>
+
                             {/* Fullscreen Button */}
                             <Button
                                 type="primary"

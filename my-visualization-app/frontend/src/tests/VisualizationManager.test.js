@@ -1,4 +1,4 @@
-import VisualizationManager from './VisualizationManager';
+import VisualizationManager from '../components/graph/VisualizationManager';
 
 describe('VisualizationManager', () => {
   let visualizationManager;
