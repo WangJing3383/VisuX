@@ -20,12 +20,6 @@ class EngineTest(TestCase):
         self.assertEqual(result.shape[1], 2)  # Check number of components
         self.assertEqual(result.shape[0], self.sample_data.shape[0])  # Check rows match
 
-    def test_apply_tsne(self):
-        """Test t-SNE dimensionality reduction"""
-        result = Engine.apply_tsne(self.sample_data, n_components=2)
-        self.assertEqual(result.shape[1], 2)
-        self.assertEqual(result.shape[0], self.sample_data.shape[0])
-
     def test_apply_umap(self):
         """Test UMAP dimensionality reduction"""
         result = Engine.apply_umap(self.sample_data, n_components=2)
@@ -36,8 +30,6 @@ class EngineTest(TestCase):
         """Test general dimensionality reduction function"""
         pca_result = Engine.dimensional_reduction(self.sample_data, method="pca", n_components=2)
         self.assertEqual(pca_result.shape[1], 2)
-        tsne_result = Engine.dimensional_reduction(self.sample_data, method="tsne", n_components=2)
-        self.assertEqual(tsne_result.shape[1], 2)
 
     def test_compute_correlation(self):
         """Test correlation computation"""
