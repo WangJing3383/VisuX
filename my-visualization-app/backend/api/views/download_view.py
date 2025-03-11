@@ -3,7 +3,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
 
-from backend.server_handler.log_manager import export_logs
 from django.http import JsonResponse, HttpResponse
 from backend.api.models import Dataset
 from rest_framework.views import APIView
