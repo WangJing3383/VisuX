@@ -465,7 +465,6 @@ class Engine:
                 else:
                     sampling_strategy = {cls: max(int(count * oversample_factor), count + 1) for cls, count in class_counts.items()}
 
-
                 #Use SMOTE to oversample.
                 if method == SMOTE_METHOD:
                     min_samples = min(class_counts.values)
@@ -479,11 +478,12 @@ class Engine:
                 else:
                     raise ValueError(INVALID_OVERSAMPLE_METHOD)
 
+                
                 X_resampled, y_resampled = oversampler.fit_resample(X, y)
 
                 # Build DataFrame
                 oversampled_data = pd.DataFrame(X_resampled, columns=[x_feature])
-                oversampled_data[y_feature] = y_resampled 
+                oversampled_data[y_feature] = y_resampled
 
                 return oversampled_data
 

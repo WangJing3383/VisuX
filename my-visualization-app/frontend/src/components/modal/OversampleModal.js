@@ -47,7 +47,6 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
     }
     if(factor <= VALID_OVERSAMPLE_FACTOR || factor > 10) {
       alert("Please give a valid oversample factor. The oversample factor should be between 1 and 10! The output dataset is the dataset oversampled with factor 2.")
-      alert("test")
     }
     const requestData = {
       datasetId: currentDatasetId,
@@ -58,13 +57,6 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
         factor: factor
       }
     }
-
-    const currentDatasetId = currentDatasetId || datasetManager.getCurrentDatasetId();
-        if (!currentDatasetId) {
-            message.error("No valid dataset ID found. Please upload a dataset first.");
-            return;
-        }
-
     console.log("Request data:", requestData);
     setLoading(true);
     try {
@@ -76,6 +68,13 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
       body: JSON.stringify(requestData),
       credentials: "include", // allow to include Cookie
       });
+      if (!result.ok) {
+        const resultData = await result.json();
+        // Show error message in UI
+        message.error(resultData.error || "Oversampling failed due to unknown error.");
+        alert(resultData.error || "Oversampling failed due to unknown error.");
+        return;
+      }
 
       const resultData = await result.json();
       const {oversampled_features, oversampled_records} = resultData;

@@ -297,13 +297,17 @@ class OversampleDataView(APIView):
             dataset_df = dataset.get_dataframe()
 
             # Perform oversampling (data interpolation)
-            oversampled_data = Engine.oversample_data(
-                dataset_df,
-                x_feature=x_feature,
-                y_feature=y_feature,
-                method=method,
-                oversample_factor=oversample_factor
-            )
+            try:
+                oversampled_data = Engine.oversample_data(
+                    dataset_df,
+                    x_feature=x_feature,
+                    y_feature=y_feature,
+                    method=method,
+                    oversample_factor=oversample_factor
+                )
+            except Exception as e:
+                # Handle any errors raised during oversampling
+                return JsonResponse({"error": f"Oversampling failed: {str(e)}"}, status=500)
 
             # Convert the oversampled data to a dictionary for easy JSON response
             oversampled_features = list(oversampled_data.columns)

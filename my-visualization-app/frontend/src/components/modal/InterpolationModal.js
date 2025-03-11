@@ -37,7 +37,7 @@ const InterpolationModal = ({visible, onCancel, uiController, logAction, onUpdat
 
     const handleInterpolate = async () => {
         if (!currentDatasetId || !xColumn || !yColumn) {
-            message.error("Please select a dataset and two columns!");
+            alert("Please select a dataset and two columns.");
             return;
         }
 
@@ -68,6 +68,7 @@ const InterpolationModal = ({visible, onCancel, uiController, logAction, onUpdat
             logAction(datasetManager.getDatasetNameById(datasetManager.getCurrentDatasetId()) + "_" + method, "Interpolate")
         } catch (error) {
             message.error(`Error: ${error.message}`);
+            alert(`Error: ${error.message}`);
         }
     };
 

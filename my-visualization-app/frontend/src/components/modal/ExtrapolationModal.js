@@ -48,9 +48,8 @@ const ExtrapolationModal = ({visible, onCancel, uiController, logAction, onUpdat
     }, [inputMode, minValue, maxValue, numPoints]);
 
     const handleExtrapolate = async () => {
-        console.log(currentDatasetId);
         if (!currentDatasetId || !xColumn || !yColumn || !extrapolateRange) {
-            message.error("Please select a dataset, two columns, and enter extrapolation range!");
+            alert("Please select a dataset, two columns and extrapolation range.");
             return;
         }
 
@@ -85,6 +84,7 @@ const ExtrapolationModal = ({visible, onCancel, uiController, logAction, onUpdat
             logAction(datasetManager.getDatasetNameById(datasetManager.getCurrentDatasetId()) + "_" + method, "Extrapolate")
         } catch (error) {
             message.error(`Error: ${error.message}`);
+            alert(`Error: ${error.message}`);
         }
     };
 
