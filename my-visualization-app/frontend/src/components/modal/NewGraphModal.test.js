@@ -14,10 +14,10 @@ jest.mock("../file/DatasetManager", () => ({
 jest.mock("../graph/ChartCategories", () => ({
   chartCategories: {
     "Bar Charts": [
-      { type: "bar", requiredFeatures: 2, icon: "📊", name: "Bar Chart" },
+      { type: "bar", requiredFeatures: 2, icon: "-", name: "Bar Chart" },
     ],
     "Line Charts": [
-      { type: "line", requiredFeatures: 1, icon: "📈", name: "Line Chart" },
+      { type: "line", requiredFeatures: 1, icon: "|", name: "Line Chart" },
     ],
   },
 }));

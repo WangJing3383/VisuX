@@ -350,7 +350,7 @@ const EditGraphPanel = () => {
           {/* Dynamically showing attributes for each available graph */}
           {graphDetails.map((graph) => (
             <Select.Option key={graph.graphId} value={graph.graphId}>
-              {`${graph.graphName} - ${graph.graphType} - (${graph.graphFeatures?.join(", ")})`}
+              {`${graph.graphType} - (${graph.graphFeatures?.join(", ")})`}
             </Select.Option>
           ))}
         </Select>

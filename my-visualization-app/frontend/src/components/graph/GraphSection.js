@@ -136,7 +136,7 @@ const GraphSection = ({ updateGraphCards }) => {
                             renderItem={(graph) => (
                                 <List.Item style={{ display: "flex", alignItems: "center" }}>
                                     <span style={{ cursor: "pointer" }} onClick={() => toggleGraphVisibility(graph.graphId)}>
-                                        {`${graph.graphName || "Graph"} - ${graph.graphType} - (${graph.selectedFeatures?.join(", ")})`}
+                                        {`${graph.graphType} - (${graph.selectedFeatures?.join(", ")})`}
                                     </span>
                                     <Button onClick={() => toggleGraphVisibility(graph.graphId)} style={{ marginLeft: "auto" }}>
                                         {visibleGraphs[graph.graphId] ? "Hide" : "Show"}
