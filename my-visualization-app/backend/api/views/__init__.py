@@ -6,8 +6,8 @@ from .download_view import DownloadView
 from .dataset_views import DatasetColumnsView, DatasetDetailView, DeleteFeatureView, ChangeDataView
 from .upload_dataset_view import UploadDatasetView
 from .processing_views import (InterpolateView, ExtrapolateView, CorrelationView, FitCurveView,
-                               DimensionalReductionView, OversampleDataView, ApplyPcaView, SuggestFeatureCombiningView,
-                               SuggestFeatureDroppingView, RecommendDimReductionView)
+                               DimensionalReductionView, OversampleDataView
+                               , RecommendDimReductionView)
 
 __all__ = [
     "UploadDatasetView",

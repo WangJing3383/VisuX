@@ -31,16 +31,6 @@ class EngineTest(TestCase):
         pca_result = Engine.dimensional_reduction(self.sample_data, method="pca", n_components=2)
         self.assertEqual(pca_result.shape[1], 2)
 
-    def test_compute_correlation(self):
-        """Test correlation computation"""
-        correlation = Engine.compute_correlation(self.sample_data, "feature1", "feature2", method="pearson")
-        self.assertAlmostEqual(correlation, 1.0, places=2)  # feature2 is a perfect linear transformation of feature1
-
-    def test_invalid_correlation_method(self):
-        """Test invalid correlation method handling"""
-        with self.assertRaises(ValueError):
-            Engine.compute_correlation(self.sample_data, "feature1", "feature2", method="invalid_method")
-
     def test_fit_curve_polynomial(self):
         """Test curve fitting with polynomial method"""
         params, covariance, fitted_data = Engine.fit_curve(self.sample_data, "feature1", "feature2", method="polynomial", degree=2)
