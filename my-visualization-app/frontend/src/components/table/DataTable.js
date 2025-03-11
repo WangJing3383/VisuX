@@ -154,7 +154,8 @@ const DataTable = () => {
         pagination={{
           ...pagination,
           total: data.length,
-          onChange: (page) => setPagination({ ...pagination, current: page }), // ✅ **Update pagination state**
+          showSizeChanger: false,
+          onChange: (page) => setPagination({ current: page, pageSize: 5 }),
         }}
         scroll={{ x: "max-content", y: 300 }}
         size="small"
