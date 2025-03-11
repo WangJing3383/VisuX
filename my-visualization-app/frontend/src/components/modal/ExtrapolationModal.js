@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Modal, Button, Input, Select, message, Table, InputNumber, Radio} from "antd";
+import {Modal, Button, Input, Select, message, Table, InputNumber, Radio, Typography} from "antd";
 
 const EMPTY_DATA_NUMBER = 0;
 const FIRST_ELEMENT_INDEX = 0;
 
 const ExtrapolationModal = ({visible, onCancel, uiController, logAction, onUpdateDataset, onClose}) => {
     const [method, setMethod] = useState("linear");
-    const [datasetId, setDatasetId] = useState(null);
     const [xColumn, setXColumn] = useState(null);
     const [yColumn, setYColumn] = useState(null);
     const [extrapolateRange, setExtrapolateRange] = useState("");
@@ -21,22 +20,24 @@ const ExtrapolationModal = ({visible, onCancel, uiController, logAction, onUpdat
     const [newDatasetId, setNewDatasetId] = useState(null);
 
     const datasetManager = uiController.getDatasetManager();
-    const availableDatasetsId = datasetManager.getAllDatasetsId();
+    const currentDatasetId = datasetManager.getCurrentDatasetId();
 
     // **Get column names when the user selects a dataset**
     useEffect(() => {
-        if (!datasetId) {
+        if (!currentDatasetId) {
             setColumns([]);
             return;
         }
+        setXColumn(null);
+        setYColumn(null);
 
         const fetchColumns = async () => {
-            const cols = await datasetManager.getDatasetColumns(datasetId);
+            const cols = await datasetManager.getDatasetColumns(currentDatasetId);
             setColumns(cols);
         };
 
         fetchColumns();
-    }, [datasetId]); // Dependent on `datasetId`, triggered on change
+    }, [currentDatasetId]); // Dependent on `currentDatasetId`, triggered on change
 
     useEffect(() => {
         if (inputMode === "range" && minValue !== null && maxValue !== null && numPoints) {
@@ -47,13 +48,14 @@ const ExtrapolationModal = ({visible, onCancel, uiController, logAction, onUpdat
     }, [inputMode, minValue, maxValue, numPoints]);
 
     const handleExtrapolate = async () => {
-        if (!datasetId || !xColumn || !yColumn || !extrapolateRange) {
+        console.log(currentDatasetId);
+        if (!currentDatasetId || !xColumn || !yColumn || !extrapolateRange) {
             message.error("Please select a dataset, two columns, and enter extrapolation range!");
             return;
         }
 
         const requestData = {
-            dataset_id: datasetId,
+            dataset_id: currentDatasetId,
             x_feature: xColumn,
             y_feature: yColumn,
             kind: method,
@@ -170,7 +172,7 @@ const ExtrapolationModal = ({visible, onCancel, uiController, logAction, onUpdat
     // apply result
     const handleApplyExtrapolate = async () => {
         const requestData = {
-            dataset_id: datasetId,
+            dataset_id: currentDatasetId,
             features: [xColumn, yColumn],
             records: extrapolatedData,
             new_dataset_name:datasetManager.getDatasetNameById(datasetManager.getCurrentDatasetId())+ "_Extrapolated_" + method
@@ -203,20 +205,16 @@ const ExtrapolationModal = ({visible, onCancel, uiController, logAction, onUpdat
     return (
         <>
             <Modal title="Extrapolation" open={visible} onCancel={onCancel} footer={null}>
-                <Select
-                    style={{width: "100%"}}
-                    placeholder="Choose a dataset"
-                    onChange={setDatasetId}
-                >
-                    {availableDatasetsId.map((id) => (
-                        <Select.Option key={id} value={id}>{datasetManager.getDatasetNameById(id)}</Select.Option>
-                    ))}
-                </Select>
+                <Typography.Paragraph style={{ width: "100%" }}>
+                    <Typography.Text strong>Current Dataset:</Typography.Text>
+                    <br />
+                    {datasetManager.getDatasetNameById(currentDatasetId) || "No dataset available"}
+                </Typography.Paragraph>
 
                 <Select
                     style={{width: "100%", marginTop: "10px"}}
                     placeholder="Select X Column"
-                    disabled={!datasetId}
+                    disabled={!currentDatasetId}
                     onChange={setXColumn}
                 >
                     {columns.map((col) => (
@@ -227,7 +225,7 @@ const ExtrapolationModal = ({visible, onCancel, uiController, logAction, onUpdat
                 <Select
                     style={{width: "100%", marginTop: "10px"}}
                     placeholder="Select Y Column"
-                    disabled={!datasetId}
+                    disabled={!currentDatasetId}
                     onChange={setYColumn}
                 >
                     {columns.map((col) => (

@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
-import { Modal, Button, InputNumber, Select, message, Table } from "antd";
+import { Modal, Button, InputNumber, Select, message, Table, Typography } from "antd";
 
 const DEFAULT_OVERSAMPLE_FACTOR = 2;
 const VALID_OVERSAMPLE_FACTOR = 0;
 
 const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateDataset}) => {
   const [method, setMethod] = useState("smote"); // Select oversampling method
-  const [datasetId, setDatasetId] = useState(null);
   const [xColumn, setXColumn] = useState(null);
   const [yColumn, setYColumn] = useState(null);
   const [factor, setOversamplingFactor] = useState(DEFAULT_OVERSAMPLE_FACTOR); // Default oversampling multiplier
@@ -22,11 +21,11 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
   const [showTable, setShowTable] = useState(true);
 
   const datasetManager = uiController.getDatasetManager();
-  const availableDatasets = datasetManager.getAllDatasetsId();
+  const currentDatasetId = datasetManager.getCurrentDatasetId();
 
   // **Get column names when the user selects a dataset**
   useEffect(() => {
-    if (!datasetId) {
+    if (!currentDatasetId) {
       setColumns([]);
       setNewDatasetId(null);
       setOversampledData(null);
@@ -34,15 +33,15 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
     }
 
     const fetchColumns = async () => {
-      const cols = await datasetManager.getDatasetColumns(datasetId);
+      const cols = await datasetManager.getDatasetColumns(currentDatasetId);
       setColumns(cols);
     };
 
     fetchColumns();
-  }, [datasetId]); // Dependent on `datasetId`, triggered on change
+  }, [currentDatasetId]); // Dependent on `currentDatasetId`, triggered on change
 
   const handleOversample = async () => {
-    if (!datasetId || !xColumn || !yColumn) {
+    if (!currentDatasetId || !xColumn || !yColumn) {
       alert("Please select a dataset and two columns.");
       return;
     }
@@ -51,7 +50,7 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
       alert("test")
     }
     const requestData = {
-      datasetId: datasetId,
+      datasetId: currentDatasetId,
       params:{
         xColumn: xColumn,
         yColumn: yColumn,
@@ -60,7 +59,7 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
       }
     }
 
-    const currentDatasetId = datasetId || datasetManager.getCurrentDatasetId();
+    const currentDatasetId = currentDatasetId || datasetManager.getCurrentDatasetId();
         if (!currentDatasetId) {
             message.error("No valid dataset ID found. Please upload a dataset first.");
             return;
@@ -156,20 +155,16 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
   return (
     <>
       <Modal title="Oversampling" open={visible} onCancel={onCancel} footer={null}>
-        <Select
-          style={{ width: "100%" }}
-          placeholder="Choose a dataset"
-          onChange={setDatasetId}
-        >
-          {availableDatasets.map((id) => (
-            <Select.Option key={id} value={id}>{datasetManager.getDatasetNameById(id)}</Select.Option>
-          ))}
-        </Select>
+        <Typography.Paragraph style={{ width: "100%" }}>
+          <Typography.Text strong>Current Dataset:</Typography.Text>
+          <br />
+          {datasetManager.getDatasetNameById(currentDatasetId) || "No dataset available"}
+        </Typography.Paragraph>
 
         <Select
           style={{ width: "100%", marginTop: "10px" }}
           placeholder="Select X Column"
-          disabled={!datasetId}
+          disabled={!currentDatasetId}
           onChange={setXColumn}
         >
           {columns.map((col) => (
@@ -180,7 +175,7 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
         <Select
           style={{ width: "100%", marginTop: "10px" }}
           placeholder="Select Y Column"
-          disabled={!datasetId}
+          disabled={!currentDatasetId}
           onChange={setYColumn}
         >
           {columns.map((col) => (

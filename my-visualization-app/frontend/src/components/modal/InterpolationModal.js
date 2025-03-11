@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Modal, Button, Select, message, Table, InputNumber, Radio} from "antd";
+import {Modal, Button, Select, message, Table, InputNumber, Radio, Typography} from "antd";
 
 const EMPTY_DATA_NUMBER = 0;
 const FIRST_ELEMENT_INDEX = 0;
 
 const InterpolationModal = ({visible, onCancel, uiController, logAction, onUpdateDataset, onClose}) => {
     const [method, setMethod] = useState("linear");
-    const [datasetId, setDatasetId] = useState(null);
     const [xColumn, setXColumn] = useState(null);
     const [yColumn, setYColumn] = useState(null);
     const [interpolatedData, setInterpolatedData] = useState([]);
@@ -20,30 +19,30 @@ const InterpolationModal = ({visible, onCancel, uiController, logAction, onUpdat
     const [showResultModal, setShowResultModal] = useState(false); // Control result modal visibility
 
     const datasetManager = uiController.getDatasetManager();
-    const availableDatasets = datasetManager.getAllDatasetsId();
+    const currentDatasetId = datasetManager.getCurrentDatasetId();
 
     useEffect(() => {
-        if (!datasetId) {
+        if (!currentDatasetId) {
             setColumns([]);
             return;
         }
 
         const fetchColumns = async () => {
-            const cols = await datasetManager.getDatasetColumns(datasetId);
+            const cols = await datasetManager.getDatasetColumns(currentDatasetId);
             setColumns(cols);
         };
 
         fetchColumns();
-    }, [datasetId]); // Dependent on `datasetId`, triggered on change
+    }, [currentDatasetId]); // Dependent on `currentDatasetId`, triggered on change
 
     const handleInterpolate = async () => {
-        if (!datasetId || !xColumn || !yColumn) {
+        if (!currentDatasetId || !xColumn || !yColumn) {
             message.error("Please select a dataset and two columns!");
             return;
         }
 
         const requestData = {
-            dataset_id: datasetId,
+            dataset_id: currentDatasetId,
             x_feature: xColumn,
             y_feature: yColumn,
             kind: method,
@@ -75,7 +74,7 @@ const InterpolationModal = ({visible, onCancel, uiController, logAction, onUpdat
     // apply result
     const handleApplyInterpolate = async () => {
         const requestData = {
-            dataset_id: datasetId,
+            dataset_id: currentDatasetId,
             features: [xColumn, yColumn],
             records: interpolatedData,
             new_dataset_name: datasetManager.getDatasetNameById(datasetManager.getCurrentDatasetId())+"_Interpolated_" + method
@@ -187,20 +186,16 @@ const InterpolationModal = ({visible, onCancel, uiController, logAction, onUpdat
     return (
         <>
             <Modal title="Interpolation" open={visible} onCancel={onCancel} footer={null}>
-                <Select
-                    style={{width: "100%"}}
-                    placeholder="Choose a dataset"
-                    onChange={(value) => setDatasetId(value)}
-                >
-                    {availableDatasets.map((id) => (
-                        <Select.Option key={id} value={id}>{datasetManager.getDatasetNameById(id)}</Select.Option>
-                    ))}
-                </Select>
+                <Typography.Paragraph style={{ width: "100%" }}>
+                    <Typography.Text strong>Current Dataset:</Typography.Text>
+                    <br />
+                    {datasetManager.getDatasetNameById(currentDatasetId) || "No dataset available"}
+                </Typography.Paragraph>
 
                 <Select
                     style={{width: "100%", marginTop: "10px"}}
                     placeholder="Select X Column"
-                    disabled={!datasetId}
+                    disabled={!currentDatasetId}
                     onChange={setXColumn}
                 >
                     {columns.map((col) => (
@@ -211,7 +206,7 @@ const InterpolationModal = ({visible, onCancel, uiController, logAction, onUpdat
                 <Select
                     style={{width: "100%", marginTop: "10px"}}
                     placeholder="Select Y Column"
-                    disabled={!datasetId}
+                    disabled={!currentDatasetId}
                     onChange={setYColumn}
                 >
                     {columns.map((col) => (
