@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import HeaderNav from './Header';
+import HeaderNav from '../components/homepage/Header';
 
 // Mock the dependent modules
-jest.mock('../file/FileComponent', () => () => (
+jest.mock('../components/file/FileComponent', () => () => (
   <div data-testid="mock-file">Mocked FileComponent</div>
 ));
 
