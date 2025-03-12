@@ -163,7 +163,7 @@ const ExtrapolationModal = ({visible, onCancel, uiController, logAction, onUpdat
         console.log("Generated Table Columns:", columns);
         console.log("Rendering table with dataSource:", dataSource);
 
-        return <Table dataSource={dataSource} columns={columns} pagination={{pageSize: 10}}/>;
+        return <Table dataSource={dataSource} columns={columns} pagination={{pageSize: 10, showSizeChanger: false}}/>;
     };
 
     // apply result
