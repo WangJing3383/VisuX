@@ -307,7 +307,7 @@ class OversampleDataView(APIView):
                 )
             except Exception as e:
                 # Handle any errors raised during oversampling
-                return JsonResponse({"error": f"Oversampling failed: {str(e)}"}, status=500)
+                return JsonResponse({"error": f"{str(e)}. Try to use other method or check your dataset."}, status=500)
 
             # Convert the oversampled data to a dictionary for easy JSON response
             oversampled_features = list(oversampled_data.columns)
@@ -321,4 +321,4 @@ class OversampleDataView(APIView):
             }, status=200)
         except Exception as e:
             # If any error occurs, return an error response with the exception message
-            return JsonResponse({"error": str(e)}, status=400)
+            return JsonResponse({"error": f"{str(e)} Try to use other method or check your dataset."}, status=400)
