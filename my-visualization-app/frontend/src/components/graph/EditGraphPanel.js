@@ -367,7 +367,11 @@ const EditGraphPanel = () => {
             {/* Y Axis selection */}
           <div style={{ marginBottom: "10px" }}>
             <label style={{ marginRight: "8px" }}>Y Axis: </label>
-            {renderFeatureSelect("y", selectedY, setSelectedY)}
+            {selectedGraph?.graphType === "pie" ? (
+            <Select disabled placeholder="Not available for this type" style={{ width: 200 }} />
+             ) : (
+            renderFeatureSelect("y", selectedY, setSelectedY)
+            )}
           </div>
 
           {/* Render additional Y axes based on the additionalYAxes state */}
@@ -393,7 +397,11 @@ const EditGraphPanel = () => {
             {/* Z Axis selection */}
           <div style={{ marginBottom: "10px" }}>
             <label style={{ marginRight: "8px" }}>Z Axis: </label>
-            {renderFeatureSelect("z", selectedZ, setSelectedZ)}
+            { !(selectedGraph?.graphType === "scatter3d" || selectedGraph?.graphType === "scatterpolar" || selectedGraph?.graphType === "heatmap") ? (
+            <Select disabled placeholder="Not available for this type" style={{ width: 200 }} />
+             ) : (
+            renderFeatureSelect("z", selectedZ, setSelectedZ)
+            )}
           </div>
 
             {/* Graph Type dropdown */}
