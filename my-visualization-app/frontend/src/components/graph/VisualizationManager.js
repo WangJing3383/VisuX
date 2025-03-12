@@ -52,6 +52,24 @@ class VisualizationManager {
   X_NAME = "X";
   Y_NAME = "Y";
   Z_NAME = "Z";
+  COLOR_PALETTE = [
+    "#FF5733", // Vibrant Red-Orange
+    "#1F77B4", // Deep Blue
+    "#2CA02C", // Bright Green
+    "#9467BD", // Soft Purple
+    "#E377C2", // Pastel Pink
+    "#17BECF", // Cyan/Teal
+    "#8C564B", // Earthy Brown
+    "#FFD700", // Gold
+    "#D62728", // Rich Red
+    "#7F7F7F", // Neutral Gray
+    "#FF69B4", // Hot Pink
+    "#40E0D0", // Turquoise
+    "#F39C12", // Warm Orange
+    "#A569BD", // Lavender
+    "#5D6D7E"  // Muted Navy
+  ];
+  
 
   chartCategories = chartCategories; // Defining chart categories for graph type functions
 
@@ -337,7 +355,7 @@ class VisualizationManager {
     const additionalTraces = [];
     // applying only if graph has more than 1 Y axes
     if (graph.moreYAxes && Array.isArray(graph.moreYAxes)) {
-      graph.moreYAxes.forEach((axisName) => {
+      graph.moreYAxes.forEach((axisName, index) => {
         // taking the related data values from the features
         if (graph.dataset && graph.dataset[axisName]) {
           let axisData = graph.dataset[axisName];
@@ -355,6 +373,8 @@ class VisualizationManager {
           const xFeature = graph.selectedFeatures[this.TO_BE_X_AXIS];
           const xData = graph.dataset[xFeature] || [];
 
+          const traceColor = this.COLOR_PALETTE[index % this.COLOR_PALETTE.length];
+
           let trace = null;
 
           // adjusting the plotly data depending on the graph type
@@ -368,7 +388,7 @@ class VisualizationManager {
                 y: axisData,
                 line: {
                   // so that each trace looks clearly
-                  color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                  color: traceColor,
                   width: this.LINE_WIDTH,
                 },
                 marker: {
@@ -384,7 +404,7 @@ class VisualizationManager {
                 y: axisData,
                 marker: {
                   // so that each trace looks clearly
-                  color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                  color: traceColor,
                 },
                 name: axisName,
               };
@@ -398,7 +418,7 @@ class VisualizationManager {
                 y: axisData,
                 line: {
                   // so that each trace looks clearly
-                  color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                  color: traceColor,
                   width: this.LINE_WIDTH,
                 },
                 name: axisName,
