@@ -2,9 +2,8 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import LogHistory from "../components/log/LogHistory";
 
-// Polyfills for browser APIs used by Ant Design's Table component
 beforeAll(() => {
-   //Watches an element’s size and reacts when it changes (e.g., resizing a box).
+   //Watches an element’s size and reacts when it changes
   if (typeof global.ResizeObserver === "undefined") {
     global.ResizeObserver = class {
       observe() {}
