@@ -422,7 +422,9 @@ const EditGraphPanel = () => {
       <ChromePicker color={editColor} onChange={handleColorChange} disableAlpha />
     </div>
           </div>
-          <Button type="primary" onClick={handleEditGraphSubmit}>
+          <Button disabled={selectedGraph && ( selectedGraph.graphType === "pie" || selectedGraph.graphType === "heatmap") }
+          type="primary" 
+          onClick={handleEditGraphSubmit}>
             Recolour Graph
           </Button>
           {/* Curve Fitting */}
