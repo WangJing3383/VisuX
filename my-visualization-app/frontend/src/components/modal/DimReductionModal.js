@@ -120,16 +120,26 @@ const DimReductionModal = ({visible, onClose, onUpdateDataset, logAction, datase
     };
 
     const renderTable = () => {
-        if (!reducedData || !reducedData.records.length) return null;
+    if (!reducedData || !reducedData.records.length) return null;
 
-        const columns = reducedData.features.map((feature) => ({
-            title: feature,
-            dataIndex: feature,
-            key: feature,
-        }));
+    const columns = reducedData.features.map((feature) => ({
+        title: feature,
+        dataIndex: feature,
+        key: feature,
+    }));
 
-        return <Table dataSource={reducedData.records} columns={columns} pagination={{pageSize: 10}}/>;
-    };
+    return (
+        <div style={{ overflowX: "auto", whiteSpace: "nowrap" }}>
+            <Table
+                dataSource={reducedData.records}
+                columns={columns}
+                pagination={{ pageSize: 10, showSizeChanger: false }}
+                scroll={{ x: 'max-content' }}
+            />
+        </div>
+    );
+};
+
 
     return (
         <Modal title="Dimensionality Reduction" visible={visible} onCancel={onClose} footer={null} width={600}>
