@@ -9,10 +9,10 @@
 
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import App from './App';
+import App from '../App';
 
 // Mock the useState hook for UIController
-jest.mock('./components/UIController');
+jest.mock('../components/UIController');
 
 describe('App Component', () => {
   beforeEach(() => {

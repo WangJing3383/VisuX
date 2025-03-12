@@ -1,17 +1,17 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import NewGraphModal from "./NewGraphModal";
-import datasetManager from "../file/DatasetManager";
+import NewGraphModal from "../components/modal/NewGraphModal";
+import datasetManager from "../components/file/DatasetManager";
 import { message } from "antd";
 
 // --- Mocks --- //
-jest.mock("../file/DatasetManager", () => ({
+jest.mock("../components/file/DatasetManager", () => ({
   getCurrentDatasetId: jest.fn(),
   getDatasetColumns: jest.fn(),
   getDatasetById: jest.fn(),
 }));
 
-jest.mock("../graph/ChartCategories", () => ({
+jest.mock("../components/graph/ChartCategories", () => ({
   chartCategories: {
     "Bar Charts": [
       { type: "bar", requiredFeatures: 2, icon: "-", name: "Bar Chart" },

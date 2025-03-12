@@ -1,17 +1,17 @@
-import UIController from "./UIController";
-import ModalController from "./modal/ModalController";
-import LogManager from "./log/LogManager";
-import datasetManager from "./file/DatasetManager";
-import TableManager from "./table/TableManager";
+import UIController from "../components/UIController";
+import ModalController from "../components/modal/ModalController";
+import LogManager from "../components/log/LogManager";
+import datasetManager from "../components/file/DatasetManager";
+import TableManager from "../components/table/TableManager";
 
 // Mock the dependent modules
-jest.mock('./modal/ModalController');
-jest.mock('./graph/GraphManager');
-jest.mock('./graph/GraphWindowController');
-jest.mock('./tool/ToolManager');
-jest.mock('./log/LogManager');
-jest.mock('./table/TableManager');
-jest.mock('./file/DatasetManager');
+jest.mock('../components/modal/ModalController');
+jest.mock('../components/graph/GraphManager');
+jest.mock('../components/graph/GraphWindowController');
+jest.mock('../components/tool/ToolManager');
+jest.mock('../components/log/LogManager');
+jest.mock('../components/table/TableManager');
+jest.mock('../components/file/DatasetManager');
 
 describe('./UIController', () => {
   let uiController;

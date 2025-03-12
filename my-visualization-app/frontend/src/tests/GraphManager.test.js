@@ -1,5 +1,5 @@
-import GraphManager from "./GraphManager";
-jest.mock("./Graph");
+import GraphManager from "../components/graph/GraphManager";
+jest.mock("../components/graph/Graph");
 
 describe("GraphManager Class", () => {
   let mockGraph;

@@ -28,9 +28,6 @@ const ExtrapolationModal = ({visible, onCancel, uiController, logAction, onUpdat
             setColumns([]);
             return;
         }
-        setXColumn(null);
-        setYColumn(null);
-
         const fetchColumns = async () => {
             const cols = await datasetManager.getDatasetColumns(currentDatasetId);
             setColumns(cols);
