@@ -4,7 +4,7 @@ import NewGraphModal from "../components/modal/NewGraphModal";
 import datasetManager from "../components/file/DatasetManager";
 import { message } from "antd";
 
-// --- Mocks --- //
+// Mocks
 jest.mock("../components/file/DatasetManager", () => ({
   getCurrentDatasetId: jest.fn(),
   getDatasetColumns: jest.fn(),
