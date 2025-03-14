@@ -8,7 +8,7 @@ describe('VisualizationManager', () => {
   });
 
   // Test case for checking graph visualization with valid data
-  it('should return valid graph data for scatter plot', () => {
+  test('should return valid graph data for scatter plot', () => {
     const graph = {
       dataset: { a: [1, 2, 3], b: [4, 5, 6] },
       type: 'scatter',
@@ -29,7 +29,7 @@ describe('VisualizationManager', () => {
   });
 
   // Test case for invalid graph (missing dataset)
-  it('should return null when dataset is missing', () => {
+  test('should return null when dataset is missing', () => {
     const graph = { type: 'scatter' }; // Missing dataset
 
     const result = visualizationManager.visualize(graph);
@@ -38,7 +38,7 @@ describe('VisualizationManager', () => {
   });
 
   // Test case for invalid graph (missing type)
-  it('should return null when type is missing', () => {
+  test('should return null when type is missing', () => {
     const graph = { dataset: { a: [1, 2], b: [3, 4] } }; // Missing type
 
     const result = visualizationManager.visualize(graph);
@@ -47,7 +47,7 @@ describe('VisualizationManager', () => {
   });
 
   // Test case for invalid selected features (invalid array)
-  it('should return null if selectedFeatures is invalid', () => {
+  test('should return null if selectedFeatures is invalid', () => {
     const graph = {
       dataset: { a: [1, 2, 3], BarProp: [4, 5, 6] },
       type: 'scatter',
@@ -61,7 +61,7 @@ describe('VisualizationManager', () => {
   });
 
   // Test case for curve fitting
-  it('should add fitted curve to the graph when valid fitted curve data is provided', () => {
+  test('should add fitted curve to the graph when valid fitted curve data is provided', () => {
     const graph = {
       dataset: { a: [1, 2, 3], b: [4, 5, 6] },
       type: 'scatter',
@@ -79,7 +79,7 @@ describe('VisualizationManager', () => {
   });
 
   // Test case for missing fitted curve
-  it('should not add fitted curve when no valid fitted curve data is provided', () => {
+  test('should not add fitted curve when no valid fitted curve data is provided', () => {
     const graph = {
       dataset: { a: [1, 2, 3], b: [4, 5, 6] },
       type: 'scatter',
@@ -95,7 +95,7 @@ describe('VisualizationManager', () => {
   });
 
   // Test case for applying additional Y axes (multiple traces)
-  it('should apply additional Y axes and create more traces', () => {
+  test('should apply additional Y axes and create more traces', () => {
     const graph = {
       dataset: { a: [1, 2, 3], b: [4, 5, 6], y1: [7, 8, 9] },
       type: 'scatter',
@@ -113,7 +113,7 @@ describe('VisualizationManager', () => {
   });
 
   // Test case for invalid graph type
-  it('should return null for unsupported graph type', () => {
+  test('should return null for unsupported graph type', () => {
     const graph = {
       dataset: { a: [1, 2], b: [3, 4] },
       type: 'unsupported', // Unsupported type

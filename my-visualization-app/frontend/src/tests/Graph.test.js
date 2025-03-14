@@ -20,7 +20,7 @@ describe('Graph class', () => {
     graph = new Graph(datasetId, id, name, mockDataset, type, selectedFeatures);
   });
 
-  it('should correctly initialize a graph object', () => {
+  test('should correctly initialize a graph object', () => {
     expect(graph.id).toBe(id);
     expect(graph.name).toBe(name);
     expect(graph.dataset).toBe(mockDataset);
@@ -40,78 +40,78 @@ describe('Graph class', () => {
     expect(graph.moreYAxes).toEqual([]);
   });
 
-  it('should change color correctly', () => {
+  test('should change color correctly', () => {
     const newColor = 'red';
     graph.changeColor(newColor);
     expect(graph.style.setColorScheme).toHaveBeenCalledWith(newColor);
     expect(graph.updatedAt).not.toBe(graph.createdAt);
   });
 
-  it('should toggle visibility correctly', () => {
+  test('should toggle visibility correctly', () => {
     const initialVisibility = graph.visible;
     graph.toggleVisibility();
     expect(graph.visible).toBe(!initialVisibility);
     expect(graph.updatedAt).not.toBe(graph.createdAt);
   });
 
-  it('should set X axis correctly', () => {
+  test('should set X axis correctly', () => {
     const newXAxis = 'c';
     graph.setXAxis(newXAxis);
     expect(graph.xAxis).toBe(newXAxis);
     expect(graph.selectedFeatures[0]).toBe(newXAxis);
   });
 
-  it('should set Y axis correctly', () => {
+  test('should set Y axis correctly', () => {
     const newYAxis = 'd';
     graph.setYAxis(newYAxis);
     expect(graph.yAxis).toBe(newYAxis);
     expect(graph.selectedFeatures[1]).toBe(newYAxis);
   });
 
-  it('should set Z axis correctly', () => {
+  test('should set Z axis correctly', () => {
     const newZAxis = 'a';
     graph.setZAxis(newZAxis);
     expect(graph.zAxis).toBe(newZAxis);
     expect(graph.selectedFeatures[2]).toBe(newZAxis);
   });
 
-  it('should set fitted curve correctly', () => {
+  test('should set fitted curve correctly', () => {
     const fittedCurve = { data: [1, 2, 3] };
     graph.setFittedCurve(fittedCurve);
     expect(graph.fittedCurve).toEqual(fittedCurve);
     expect(graph.updatedAt).not.toBe(graph.createdAt);
   });
 
-  it('should set more Y axes correctly', () => {
+  test('should set more Y axes correctly', () => {
     const moreYAxes = ['y1', 'y2'];
     graph.setMoreYAxes(moreYAxes);
     expect(graph.moreYAxes).toEqual(moreYAxes);
   });
 
-  it('should get more Y axes correctly', () => {
+  test('should get more Y axes correctly', () => {
     const moreYAxes = ['y1', 'y2'];
     graph.setMoreYAxes(moreYAxes);
     expect(graph.getMoreYAxes()).toEqual(moreYAxes);
   });
 
-  it('should update graph type and features', () => {
+  test('should update graph type and features', () => {
     chartCategories['area'] = [{ type: 'area', requiredFeatures: 3 }];
     graph.setType('area');
     expect(graph.type).toBe('area');
     });
 
-  it('should exclude range correctly', () => {
+    test('should exclude range correctly', () => {
     graph.excludeRange(1, 2);
     expect(graph.showedDatapoints).toEqual([3]);
   });
 
-  it('should restore range correctly', () => {
+  test('should restore range correctly', () => {
     graph.excludeRange(1, 2);
     graph.restoreRange(1, 2);
     expect(graph.showedDatapoints).toEqual([3, 1, 2]);
   });
 
-  it('should return the correct required features for a graph type', () => {
+  test('should return the correct required features for a graph type', () => {
     chartCategories['scatter'] = [{ type: 'scatter', requiredFeatures: 2 }];
     expect(graph.getRequiredFeatures('scatter')).toBe(2);
   });

@@ -97,7 +97,7 @@ describe('./UIController', () => {
     expect(createGraphMock).toHaveBeenCalledWith(action.graphInfo);
   });
 
-  it('should log the failure message when the CREATE_GRAPH action fails', () => {
+  test('should log the failure message when the CREATE_GRAPH action fails', () => {
     const action = { type: 'CREATE_GRAPH', graphInfo: { graphName: 'testGraph' } };
 
     // Spy on console.log and console.error to verify if the correct messages are logged

@@ -7,7 +7,7 @@ describe('ModalController', () => {
     modalController = new ModalController();
   });
 
-  it('should open a modal and store the correct state and data', () => {
+  test('should open a modal and store the correct state and data', () => {
     const modalType = 'infoModal';
     const modalData = { message: 'This is a test message' };
     const logSpy = jest.spyOn(console, 'log').mockImplementation();
@@ -22,7 +22,7 @@ describe('ModalController', () => {
     logSpy.mockRestore();
   });
 
-  it('should close the modal and reset the state', () => {
+  test('should close the modal and reset the state', () => {
     const modalType = 'infoModal';
     const modalData = { message: 'This is a test message' };
 
@@ -37,7 +37,7 @@ describe('ModalController', () => {
     logSpy.mockRestore();
   });
 
-  it('should correctly identify if a modal is active', () => {
+  test('should correctly identify if a modal is active', () => {
     const modalType = 'infoModal';
     expect(modalController.isModalActive(modalType)).toBe(false);
 
@@ -48,7 +48,7 @@ describe('ModalController', () => {
     expect(modalController.isModalActive(modalType)).toBe(false);
   });
 
-  it('should return the correct modal data', () => {
+  test('should return the correct modal data', () => {
     const modalData = { message: 'This is a test message' };
 
     modalController.openModal('infoModal', modalData);

@@ -8,7 +8,7 @@ describe('TableManager', () => {
     tableManager = new TableManager(datasetManagerMock);
   });
 
-  it('should update table dataset when old dataset exists', () => {
+  test('should update table dataset when old dataset exists', () => {
     const oldDatasetId = 'oldId';
     const newDatasetId = 'newId';
     const mockTable = { data: 'mock data' };
@@ -26,7 +26,7 @@ describe('TableManager', () => {
     logSpy.mockRestore();
   });
 
-  it('should not update table dataset when old dataset does not exist', () => {
+  test('should not update table dataset when old dataset does not exist', () => {
     const oldDatasetId = 'oldId';
     const newDatasetId = 'newId';
 
