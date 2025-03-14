@@ -1,7 +1,5 @@
 from rest_framework import status
 from rest_framework.response import Response
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
 
 from backend.api.serializers import DatasetSerializer
@@ -10,7 +8,6 @@ from backend.api.models import Dataset
 from rest_framework.views import APIView
 import json
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class DatasetDetailView(APIView):
     """
     Get full dataset (data + column names)
@@ -25,7 +22,6 @@ class DatasetDetailView(APIView):
             return Response({"error": "Dataset not found"}, status=status.HTTP_404_NOT_FOUND)
         
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class DatasetColumnsView(APIView):
     """
     Get only the column names of the dataset
@@ -39,7 +35,6 @@ class DatasetColumnsView(APIView):
             return Response({"error": "Dataset not found"}, status=status.HTTP_404_NOT_FOUND)
         
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class ChangeDataView(APIView):
     def post(self, request, dataset_id):
         """
@@ -76,7 +71,6 @@ class ChangeDataView(APIView):
         })
     
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class DeleteFeatureView(APIView):
     def post(self, request):
         # Parse JSON request body
@@ -111,7 +105,6 @@ class DeleteFeatureView(APIView):
             "dataset_id": original_dataset.id
         })
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class CreateDatasetView(APIView):
     def post(self, request):
         try:

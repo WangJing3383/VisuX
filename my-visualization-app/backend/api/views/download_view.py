@@ -1,6 +1,4 @@
 import io
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
 
 from django.http import JsonResponse, HttpResponse
@@ -10,8 +8,6 @@ import json
 import pandas as pd
 
 
-
-# @method_decorator(csrf_exempt, name='dispatch')
 class DownloadView(APIView):
     def get(self, request, dataset_id, file_format, *args, **kwargs):
 

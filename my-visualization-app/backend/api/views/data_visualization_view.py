@@ -1,10 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import pandas as pd
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class DataVisualizationView(APIView):
     def post(self, request):
         # Getting data
