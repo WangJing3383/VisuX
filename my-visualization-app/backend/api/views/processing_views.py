@@ -1,5 +1,3 @@
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
 from backend.server_handler.engine import Engine
 from django.http import JsonResponse
@@ -7,9 +5,7 @@ from backend.api.models import UploadedFile, Dataset
 from rest_framework.views import APIView
 import json
 import pandas as pd
-import numpy as np
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class FitCurveView(APIView):
     def post(self, request):
         try:
@@ -59,7 +55,6 @@ class FitCurveView(APIView):
             return JsonResponse({"error": str(e)}, status=400)
 
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class InterpolateView(APIView):
     def post(self, request):
         try:
@@ -115,7 +110,6 @@ class InterpolateView(APIView):
             return JsonResponse({"error": str(e)}, status=400)
 
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class ExtrapolateView(APIView):
     def post(self, request):
         try:
@@ -161,7 +155,6 @@ class ExtrapolateView(APIView):
             return JsonResponse({"error": str(e)}, status=500)
 
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class CorrelationView(APIView):
     def post(self, request):
         try:
@@ -200,7 +193,6 @@ class CorrelationView(APIView):
             return JsonResponse({"error": str(e)}, status=500)
 
 
-# @method_decorator(csrf_exempt, name="dispatch")
 class DimensionalReductionView(APIView):
     def post(self, request):
         try:
@@ -251,7 +243,6 @@ class DimensionalReductionView(APIView):
             return JsonResponse({"error": str(e)}, status=500)
 
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class RecommendDimReductionView(APIView):
     def get(self, request):
         try:
@@ -271,7 +262,6 @@ class RecommendDimReductionView(APIView):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class OversampleDataView(APIView):
     def post(self, request):
         try:

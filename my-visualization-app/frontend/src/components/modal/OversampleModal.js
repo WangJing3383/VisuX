@@ -122,7 +122,6 @@ const OversampleModal = ({ visible, onCancel, uiController ,logAction, onUpdateD
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                //"X-CSRFToken": getCSRFToken(),  // send CSRF Token
               },
               body: JSON.stringify(requestData),
               credentials: "include", // allow to include Cookie

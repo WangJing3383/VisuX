@@ -1,11 +1,8 @@
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 from django.http import JsonResponse
 from rest_framework.views import APIView
 import json
 import pandas as pd
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class HandleUserActionView(APIView):
     def post(self, request):
         """

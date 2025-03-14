@@ -35,23 +35,6 @@ describe('App Component', () => {
     expect(screen.getByText(/Layout Container/i)).toBeInTheDocument();
   });
 
-  test('fetches CSRF token on mount and stores it in localStorage', async () => {
-    // Mock fetch to return a sample CSRF token response
-    global.fetch = jest.fn().mockResolvedValue({
-      json: jest.fn().mockResolvedValue({ csrfToken: 'test-csrf-token' }),
-    });
-
-    render(<App />);
-
-    // Wait for useEffect to trigger CSRF fetch
-    await waitFor(() => expect(global.fetch).toHaveBeenCalledWith('http://localhost:8000/api/get_csrf_token/', expect.any(Object)));
-
-    // Check if CSRF token was saved in localStorage
-    expect(localStorage.getItem('csrfToken')).toBe('test-csrf-token');
-    // Also check if the cookie is set
-    expect(document.cookie).toContain('csrftoken=test-csrf-token');
-  });
-
   test('toggling sidebar state updates correctly', () => {
     render(<App />);
 

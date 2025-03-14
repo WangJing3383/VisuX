@@ -12,12 +12,6 @@ def test_user(db):
     return User.objects.create_user(username="testuser", password="testpassword")
 
 @pytest.mark.django_db
-def test_get_csrf_token(api_client):
-    response = api_client.get("/api/get_csrf_token/")
-    assert response.status_code == 200
-    assert "csrftoken" in response.cookies
-
-@pytest.mark.django_db
 def test_upload_file(api_client, test_user):
     api_client.force_authenticate(user=test_user)
 
