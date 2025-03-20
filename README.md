@@ -12,20 +12,6 @@ Visux is a web-based tool designed to provide users with interactive visualizati
 - **Graph Editing**: Allows customization of axes, colors, and styles.
 - **Logging System**: Tracks all user actions and operations for better data management.
 
-## Technologies Used
-### Frontend
-- **React.js** (Component-based UI)
-- **Ant Design** (UI components)
-- **Plotly.js** (Data visualisation)
-- **Axios** (API communication)
-
-### Backend
-- **Django** (Web framework)
-- **Django REST Framework** (API development)
-- **SQLite** (Database management)
-- **Pandas, NumPy** (Data manipulation)
-- **Scikit-learn, SciPy** (Machine learning & statistical analysis)
-
 ## Installation
 ### Prerequisites
 Ensure you have the following installed:
@@ -59,8 +45,21 @@ Ensure you have the following installed:
 1. Upload a dataset through the interface.
 2. Select visualization options or apply data processing tools.
 3. Customize graphs using the **Graph Editor**.
-4. Download processed datasets or export visualizations.
+3. Download processed datasets or export visualisations.
 
+## Technologies Used
+### Frontend
+- **React.js** (Component-based UI)
+- **Ant Design** (UI components)
+- **Plotly.js** (Data visualisation)
+- **Axios** (API communication)
+
+### Backend
+- **Django** (Web framework)
+- **Django REST Framework** (API development)
+- **SQLite** (Database management)
+- **Pandas, NumPy** (Data manipulation)
+- **Scikit-learn, SciPy** (Machine learning & statistical analysis)
 
 ## Contributors
 - **Shengjie Yin**  
