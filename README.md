@@ -1,11 +1,11 @@
-# Visux - Data Visualization and Dimensionality Reduction Engine
+# Visux - Data Visualisation and Dimensionality Reduction Engine
 
 ## Overview
 Visux is a web-based tool designed to provide users with interactive visualization and advanced techniques for their datasets.
 
 ## Features
 - **File Upload & Download**: Supports CSV, Excel, and JSON formats.
-- **Data Visualization**: Provides multiple chart types, including scatter plots, line charts, bar charts, pie charts, heatmaps, and 3D visualizations using **Plotly.js**.
+- **Data Visualisation**: Provides multiple chart types, including scatter plots, line charts, bar charts, pie charts, heatmaps, and 3D visualizations using **Plotly.js**.
 - **Dimensionality Reduction**: Supports **PCA, t-SNE, and UMAP** for feature reduction.
 - **Interpolation & Extrapolation**: Applies linear, polynomial, and exponential methods to extend datasets.
 - **Correlation Analysis**: Computes Pearson, Spearman, and Kendall correlations.
@@ -16,7 +16,7 @@ Visux is a web-based tool designed to provide users with interactive visualizati
 ### Frontend
 - **React.js** (Component-based UI)
 - **Ant Design** (UI components)
-- **Plotly.js** (Data visualization)
+- **Plotly.js** (Data visualisation)
 - **Axios** (API communication)
 
 ### Backend
