@@ -1,7 +1,7 @@
-# Visux - Data Visualisation and Dimensionality Reduction Engine
+# VisuX - Data Visualisation and Dimensionality Reduction Engine
 
 ## Overview
-Visux is a web-based tool designed to provide users with interactive visualization and advanced techniques for their datasets.
+VisuX is a web-based tool designed to provide users with interactive visualization and advanced techniques for their datasets.
 
 ## Features
 - **File Upload & Download**: Supports CSV, Excel, and JSON formats.
