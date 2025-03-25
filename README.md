@@ -26,7 +26,6 @@ Ensure you have the following installed:
 ```
 #### 2. Backend Setup
 ```sh
- cd backend
  python -m venv venv  # Create a virtual environment
  source venv/bin/activate  # Activate virtual environment (Mac/Linux)
  venv\Scripts\activate  # Activate virtual environment (Windows)
